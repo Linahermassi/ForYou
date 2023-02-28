@@ -21,7 +21,9 @@ public class User implements Serializable {
      int userId;
      String password;
      String firstName;
+
      String lastName;
+
      String email;
      String profession;
     @Temporal(TemporalType.DATE)
