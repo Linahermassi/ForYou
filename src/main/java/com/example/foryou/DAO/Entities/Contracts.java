@@ -34,6 +34,7 @@ public class Contracts implements Serializable {
     @Enumerated(EnumType.STRING)
     PaymentType paymentType;
     int installementsnbr;
+    
     @ManyToOne
     User assureur;
     @ManyToOne
@@ -42,4 +43,5 @@ public class Contracts implements Serializable {
     List<Sinister> sinisterList;
     @ManyToOne
     Subproduct subproduct;
+
 }
