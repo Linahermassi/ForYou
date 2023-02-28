@@ -18,6 +18,16 @@ public class ProductRestController {
 
 
         private IproductService iProductService;
+
+    @GetMapping("/afficherProductById")
+    public Product afficherCreditById(@PathVariable int productId ) {
+
+        return iProductService.selectById(productId);
+    }
+    @GetMapping("/afficherAllProducts")
+    public List<Product> afficherAll(){
+        return iProductService.selectAll();
+    }
         @PostMapping("/ajouterProduct")
         public ResponseEntity<String> addProduct(@RequestBody Product product){
             iProductService.add(product);

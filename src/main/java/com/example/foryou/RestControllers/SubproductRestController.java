@@ -1,5 +1,6 @@
 package com.example.foryou.RestControllers;
 
+import com.example.foryou.DAO.Entities.Product;
 import com.example.foryou.DAO.Entities.Subproduct;
 import com.example.foryou.Services.Interfaces.IsubproductService;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,16 @@ import java.util.List;
 public class SubproductRestController {
 
     private IsubproductService iSubproductService;
+
+    @GetMapping("/afficherSubroductById")
+    public Subproduct afficherSubproductById(@PathVariable int subproductId ) {
+
+        return iSubproductService.selectById(subproductId);
+    }
+    @GetMapping("/afficherAllSubproducts")
+    public List<Subproduct> afficherAll(){
+        return iSubproductService.selectAll();
+    }
     @PostMapping("/ajouterSubproduct")
     public ResponseEntity<String> addSubproduct(@RequestBody Subproduct subproduct){
         iSubproductService.add(subproduct);
