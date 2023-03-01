@@ -1,5 +1,6 @@
 package com.example.foryou.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,6 +23,8 @@ public class Product implements Serializable {
      String description;
     @Enumerated(EnumType.STRING)
      Type typeProduct;
+
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     List<Subproduct> subproductList;
-        }
+}
