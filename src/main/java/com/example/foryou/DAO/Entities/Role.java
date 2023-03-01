@@ -1,5 +1,6 @@
 package com.example.foryou.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,7 +21,11 @@ public class Role implements Serializable {
      int roleId;
     @Enumerated(EnumType.STRING)
      RoleType roleType;
+
     @OneToMany(mappedBy = "role")
+    @JsonIgnore
     List<User> userList;
+
+
 
 }
