@@ -1,5 +1,6 @@
 package com.example.foryou.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -21,9 +22,14 @@ public class Reclamation implements Serializable {
      String title;
      String category;
      String details;
+
      @ManyToMany
-    List<User> userList;
+     @JsonIgnore
+     List<User> userList;
      @OneToOne(mappedBy = "reclamation")
-    Response response;
+     @JsonIgnore
+     Response response;
+
+
 
 }

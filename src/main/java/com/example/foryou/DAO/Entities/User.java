@@ -37,19 +37,27 @@ public class User implements Serializable {
      String expertiseDomain;
     @Enumerated(EnumType.STRING)
      Gender gender;
+
     @ManyToOne
+    @JsonIgnore
     User user;
     @OneToMany
+    @JsonIgnore
     List<User> userList;
     @ManyToOne
+    @JsonIgnore
     Role role;
     @ManyToMany(mappedBy = "userList")
+    @JsonIgnore
     List<Reclamation> reclamationList;
     @OneToMany(mappedBy = "assureur")
+    @JsonIgnore
     List<Contracts> contractsA;
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     List<Contracts> contractsList;
     @OneToMany(mappedBy = "client")
+    @JsonIgnore
     List<Sinister> sinisterList;
 
     public <E> User(String javainuse, String $2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6, ArrayList<E> es) {
@@ -70,6 +78,8 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+
 
 
 }

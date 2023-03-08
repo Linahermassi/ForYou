@@ -1,5 +1,6 @@
 package com.example.foryou.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -28,9 +29,12 @@ public class Credit implements Serializable {
      float refundAmount;
      int nbrTranches;
      String methodPayment;
+
     @OneToOne
+    @JsonIgnore
     Credit credit;
     @OneToMany(mappedBy = "credit")
+    @JsonIgnore
     List<Tranche> trancheList;
 
 }

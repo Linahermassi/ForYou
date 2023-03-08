@@ -1,5 +1,6 @@
 package com.example.foryou.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -34,14 +35,21 @@ public class Contracts implements Serializable {
     @Enumerated(EnumType.STRING)
     PaymentType paymentType;
     int installementsnbr;
-    
+
     @ManyToOne
+    @JsonIgnore
     User assureur;
     @ManyToOne
+    @JsonIgnore
     User user;
     @OneToMany(mappedBy = "contract")
+    @JsonIgnore
     List<Sinister> sinisterList;
     @ManyToOne
+    @JsonIgnore
     Subproduct subproduct;
+
+
+
 
 }
