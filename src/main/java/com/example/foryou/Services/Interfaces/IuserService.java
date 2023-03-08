@@ -21,5 +21,9 @@ public interface IuserService {
 
     void deleteAll(List<User> list);
 
-    List<User> selectByAdress(User adress);
+    List<User> selectByAdress(String adress);
+
+    User selectByUsername(String username);
+
+    User selectByEmail(String email);
 }

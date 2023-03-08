@@ -2,7 +2,6 @@ package com.example.foryou.RestControllers;
 
 import com.example.foryou.DAO.Entities.Role;
 import com.example.foryou.DAO.Entities.RoleType;
-import com.example.foryou.DAO.Entities.User;
 import com.example.foryou.Services.Interfaces.IroleService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

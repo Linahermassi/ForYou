@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,16 +21,18 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      int userId;
-     String password;
+    String username;
+    @JsonIgnore
+    String password;
      String firstName;
-
      String lastName;
-
      String email;
      String profession;
     @Temporal(TemporalType.DATE)
      Date birthDate;
      String adress;
+     String region;
+     float salary;
      long phone;
      String expertiseDomain;
     @Enumerated(EnumType.STRING)
@@ -56,6 +59,25 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "client")
     @JsonIgnore
     List<Sinister> sinisterList;
+
+    public <E> User(String javainuse, String $2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6, ArrayList<E> es) {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
 
 
