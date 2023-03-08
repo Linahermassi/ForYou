@@ -49,9 +49,9 @@ public class UserService implements IuserService {
     }
 
     @Override
-    public void deleteAll(List<User> list) { userRepository.deleteAll(list);
+    public void deleteAll(List<User> list) {
+        userRepository.deleteAll(list);
     }
-
 
 
     @Override
@@ -72,8 +72,6 @@ public class UserService implements IuserService {
         //return abonnementRepository.getByTypeAbo(type);
         return userRepository.findByEmail(email);
     }
-
-
 
 
 }

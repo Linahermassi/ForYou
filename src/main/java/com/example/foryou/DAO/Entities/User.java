@@ -20,23 +20,23 @@ import java.util.List;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     int userId;
+    int userId;
     String username;
     @JsonIgnore
     String password;
-     String firstName;
-     String lastName;
-     String email;
-     String profession;
+    String firstName;
+    String lastName;
+    String email;
+    String profession;
     @Temporal(TemporalType.DATE)
-     Date birthDate;
-     String adress;
-     String region;
-     float salary;
-     long phone;
-     String expertiseDomain;
+    Date birthDate;
+    String adress;
+    String region;
+    float salary;
+    long phone;
+    String expertiseDomain;
     @Enumerated(EnumType.STRING)
-     Gender gender;
+    Gender gender;
 
     @ManyToOne
     @JsonIgnore
@@ -78,8 +78,6 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 
 
 }
