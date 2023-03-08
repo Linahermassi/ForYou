@@ -3,6 +3,7 @@ package com.example.foryou.Services.Classes;
 import com.example.foryou.DAO.Entities.Contracts;
 import com.example.foryou.DAO.Entities.Notification;
 import com.example.foryou.DAO.Entities.Type;
+import com.example.foryou.DAO.Entities.User;
 import com.example.foryou.DAO.Repositories.ContractRepository;
 import com.example.foryou.Services.Interfaces.IContractService;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
@@ -83,8 +84,12 @@ public class ContractService implements IContractService {
                 String message = "Le contrat numéro " + contrat.getContract_id()+ " a expiré aujourd'hui.";
                 Notification notification = new Notification();
                 notification.setNotifDescription(message);
-                //notification.setReceivers() ;
-                notificationService.sendEmail(contrat.getUser().getEmail(), "Notification de contrat expiré", message);
+                ArrayList<User> listReceivers= new ArrayList<>();
+                listReceivers.add(contrat.getUser());
+                notification.setReceivers(listReceivers) ;
+                for (User receiver: listReceivers){
+                    notificationService.sendEmail(receiver.getEmail(), "Notification de contrat expiré", message);
+                }
             }
         }
 
