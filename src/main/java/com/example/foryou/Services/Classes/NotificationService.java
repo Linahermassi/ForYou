@@ -14,7 +14,6 @@ import javax.mail.internet.MimeMessage;
 public class NotificationService implements INotificationService {
 
         // Envoyer des notifications par courrier électronique:
-        //@Autowired
         private JavaMailSender javaMailSender;
         public void sendEmail(String to, String subject, String text) throws MessagingException {
             MimeMessage message = javaMailSender.createMimeMessage();

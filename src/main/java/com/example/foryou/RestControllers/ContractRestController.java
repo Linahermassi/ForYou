@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -71,8 +72,8 @@ public class ContractRestController {
         return iContractService.selectRenewableContract();
     }
     @DeleteMapping("SupprimerNonRenewableContract")
-    public ResponseEntity<String> deleteNonRenewableContract(@RequestBody Date todayDate){
-        iContractService.deleteNonRenewableContract(todayDate);
+    public ResponseEntity<String> deleteNonRenewableContract(){
+        iContractService.deleteNonRenewableContract();
         return ResponseEntity.ok("Deleted successfully.");
     }
     /////////////////////////////////////

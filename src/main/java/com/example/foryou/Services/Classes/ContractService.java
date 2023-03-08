@@ -69,8 +69,8 @@ public class ContractService implements IContractService {
     }
     // ********** Supprimer les contracts non renouvlable dont la date d'expiration et la date d'aujourdhui
     @Override
-    public int deleteNonRenewableContract(Date todayDate) {
-        return contractRepository.delete(todayDate);
+    public void deleteNonRenewableContract() {
+         contractRepository.deleteNonRenewableContract();
     }
 
     // ********************************  Notifications
@@ -83,7 +83,7 @@ public class ContractService implements IContractService {
                 String message = "Le contrat numéro " + contrat.getContract_id()+ " a expiré aujourd'hui.";
                 Notification notification = new Notification();
                 notification.setNotifDescription(message);
-                notification.setReceiver(contrat.getUser().getEmail());
+                //notification.setReceivers() ;
                 notificationService.sendEmail(contrat.getUser().getEmail(), "Notification de contrat expiré", message);
             }
         }
