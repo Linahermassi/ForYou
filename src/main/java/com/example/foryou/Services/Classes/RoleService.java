@@ -1,9 +1,9 @@
 package com.example.foryou.Services.Classes;
 
+import com.example.foryou.Services.Interfaces.IroleService;
 import com.example.foryou.DAO.Entities.Role;
 import com.example.foryou.DAO.Entities.RoleType;
 import com.example.foryou.DAO.Repositories.RoleRepository;
-import com.example.foryou.Services.Interfaces.IroleService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

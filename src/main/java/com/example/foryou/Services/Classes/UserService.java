@@ -52,9 +52,28 @@ public class UserService implements IuserService {
     public void deleteAll(List<User> list) { userRepository.deleteAll(list);
     }
 
+
+
     @Override
-    public List<User> selectByAdress(User adress) {
+    public List<User> selectByAdress(String adress) {
         //return abonnementRepository.getByTypeAbo(type);
         return userRepository.findByAdress(adress);
     }
+
+    @Override
+    public User selectByUsername(String username) {
+        //return abonnementRepository.getByTypeAbo(type);
+        return userRepository.findByUsername(username);
+    }
+
+
+    @Override
+    public User selectByEmail(String email) {
+        //return abonnementRepository.getByTypeAbo(type);
+        return userRepository.findByEmail(email);
+    }
+
+
+
+
 }
