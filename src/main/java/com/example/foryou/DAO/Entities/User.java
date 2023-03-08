@@ -59,6 +59,10 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "client")
     @JsonIgnore
     List<Sinister> sinisterList;
+    @OneToMany(mappedBy = "transmitter")
+    List<Notification> notificationTList;
+    @ManyToMany(mappedBy = "receivers")
+    List<Notification> notificationRList;
 
     public <E> User(String javainuse, String $2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6, ArrayList<E> es) {
     }
