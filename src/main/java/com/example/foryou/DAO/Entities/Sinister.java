@@ -27,8 +27,7 @@ public class Sinister implements Serializable {
      @ManyToOne
      @JsonIgnore
      User client;
-     @ManyToOne
-     @JsonIgnore
+     @ManyToOne(cascade = CascadeType.ALL)
      Contracts contract;
      @OneToMany(mappedBy = "sinister")
      @JsonIgnore

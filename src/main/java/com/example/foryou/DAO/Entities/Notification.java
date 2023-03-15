@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 @Getter
@@ -22,13 +24,14 @@ public class Notification implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int notifId;
     String NotifDescription;
+    @Enumerated(EnumType.STRING)
     TypeNotif typeNotif;
     @Temporal(TemporalType.DATE)
     Date notifDate;
     @ManyToOne
     User transmitter;
     @ManyToMany
-    List<User> receivers;
+    List<User> receivers = new ArrayList<>();
 
 
 }
