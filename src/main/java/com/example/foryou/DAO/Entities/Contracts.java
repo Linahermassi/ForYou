@@ -25,7 +25,7 @@ public class Contracts implements Serializable {
     @Temporal(TemporalType.DATE)
      Date startDate;
     @Temporal(TemporalType.DATE)
-     Date endDate;
+     Date exprirationDate;
     float NetPremium;
     float TTCPremium;
     float ceilingAmout;
@@ -35,7 +35,10 @@ public class Contracts implements Serializable {
     @Enumerated(EnumType.STRING)
     PaymentType paymentType;
     int installementsnbr;
-
+    int duration ;
+    @Temporal(TemporalType.DATE)
+    Date lastRenewalDate;
+    boolean renewable;
     @ManyToOne
     @JsonIgnore
     User assureur;
@@ -48,8 +51,5 @@ public class Contracts implements Serializable {
     @ManyToOne
     @JsonIgnore
     Subproduct subproduct;
-
-
-
 
 }
