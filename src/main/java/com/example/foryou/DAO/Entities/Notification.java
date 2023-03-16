@@ -23,6 +23,8 @@ public class Notification implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int notifId;
+
+    @Column(length = 1000)
     String NotifDescription;
     @Enumerated(EnumType.STRING)
     TypeNotif typeNotif;
@@ -30,8 +32,8 @@ public class Notification implements Serializable {
     Date notifDate;
     @ManyToOne
     User transmitter;
-    @ManyToMany
-    List<User> receivers = new ArrayList<>();
+    @ManyToOne
+    User receiver ;
 
 
 }

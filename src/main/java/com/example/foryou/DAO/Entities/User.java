@@ -37,7 +37,6 @@ public class User implements Serializable {
      String expertiseDomain;
     @Enumerated(EnumType.STRING)
      Gender gender;
-
     @ManyToOne
     @JsonIgnore
     User user;
@@ -62,30 +61,11 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "transmitter")
     @JsonIgnore
     List<Notification> notificationTList;
-    @ManyToMany(mappedBy = "receivers")
+    @OneToMany(mappedBy = "receiver")
     @JsonIgnore
     List<Notification> notificationRList;
 
     public <E> User(String javainuse, String $2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6, ArrayList<E> es) {
     }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-
 
 }
