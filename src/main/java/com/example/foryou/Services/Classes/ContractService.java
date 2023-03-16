@@ -1,26 +1,36 @@
 package com.example.foryou.Services.Classes;
-
 import com.example.foryou.DAO.Entities.*;
 import com.example.foryou.DAO.Repositories.ContractRepository;
 import com.example.foryou.DAO.Repositories.NotificationRepository;
 import com.example.foryou.Services.Interfaces.IContractService;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import lombok.AllArgsConstructor;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Properties;
 @Service
 @AllArgsConstructor
 public class ContractService implements IContractService {
     private ContractRepository contractRepository;
-    private JavaMailSender javaMailSender;
 
     /////////////////////////Crud
     @Override
@@ -86,11 +96,11 @@ public class ContractService implements IContractService {
         contractRepository.deleteNonRenewableContract();
     }
 
-    // ********************************  Notifications
+    // ********************************************************   Notifications
     private NotificationService notificationService;
     private NotificationRepository notificationRepository;
 
-    // ********** Envoi du mail
+    // ********************************************************  Envoi du mail
     @Scheduled(cron = "0 0 8-9 * * ?")
     public void verifierContrats() throws MessagingException, javax.mail.MessagingException {
         Notification notification = new Notification();
@@ -106,14 +116,71 @@ public class ContractService implements IContractService {
            // ArrayList<User> listReceivers = new ArrayList<>();
                 User receiver = contrat.getUser();
                 notificationService.sendEmail(receiver.getEmail(), "Contrat expiré", message);
-            // *********** ajout de notif
+            // *********** Ajout de notif
             notification.setTypeNotif(TypeNotif.CONTRACT);
             notification.setNotifDate(date);
             notification.setReceiver(receiver);
             notificationRepository.save(notification);
         }
     }
+    // ********************************************************  Generer un contrat pdf
+    public File genererContratPDF(Contracts contract) throws IOException, DocumentException {
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("contrat.pdf"));
+        document.open();
+        document.add(new Paragraph("Contrat"));
+        document.add(new Paragraph("ID: " + contract.getContract_id()));
+        document.add(new Paragraph("Date de création: " + contract.getCreationDate()));
+        document.add(new Paragraph("Date d'expiration: " + contract.getExprirationDate()));
+        // Ajouter d'autres informations du contrat
+        document.close();
+        return null;
+    }
 
+    // ******************************************************** Envoyer contrat par mail
 
-}
+    public void envoyerContratParEmail(User user, Contracts  contract) throws javax.mail.MessagingException {
+        String smtpHost = "smtp.gmail.com";
+        String smtpPort = "587";
+        String smtpUsername = "lina.hermessi9@gmail.com";
+        String smtpPassword = "vxuyjkgyopoliymx";
+        String sender = "lina.hermessi9@gmail.com";
+        String subject = "Nouveau contrat";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", smtpHost);
+        props.put("mail.smtp.port", smtpPort);
+
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(smtpUsername, smtpPassword);
+            }
+        });
+
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(sender));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+        message.setSubject(subject);
+
+        // Créer le contenu du message
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setText("Bonjour "+ user.getLastName()+" "+ user.getFirstName() + ",\n\nVeuillez trouver ci-joint le contrat \"" + contract.getContract_id() + "\".");
+
+        // Créer la pièce jointe PDF
+        MimeBodyPart pdfAttachment = new MimeBodyPart();
+        DataSource source = new FileDataSource("contrat.pdf");
+        pdfAttachment.setDataHandler(new DataHandler(source));
+        pdfAttachment.setFileName("contrat.pdf");
+
+        // Ajouter la pièce jointe PDF au message
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart);
+        multipart.addBodyPart(pdfAttachment);
+        message.setContent(multipart);
+        // Envoyer le message
+        Transport.send(message);
+    }
+    }
 
