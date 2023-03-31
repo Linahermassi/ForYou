@@ -3,9 +3,9 @@ import com.example.foryou.DAO.Entities.*;
 import com.example.foryou.DAO.Repositories.ContractRepository;
 import com.example.foryou.DAO.Repositories.NotificationRepository;
 import com.example.foryou.Services.Interfaces.IContractService;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import lombok.AllArgsConstructor;
@@ -128,6 +128,31 @@ public class ContractService implements IContractService {
         Document document = new Document();
         PdfWriter.getInstance(document, new FileOutputStream("contrat.pdf"));
         document.open();
+
+        //Création d'une table avec deux colonnes pour les logos
+        PdfPTable table = new PdfPTable(2);
+        table.setWidthPercentage(100);
+        PdfPCell cell = new PdfPCell();
+
+        //Ajouter le premier logo à la première cellule
+        Image logo1 = Image.getInstance("image/logo1.png");
+        logo1.scaleAbsolute(50f, 50f);
+        logo1.setAlignment(Element.ALIGN_LEFT);
+        cell.addElement(logo1);
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        //Ajouter le deuxième logo à la deuxième cellule
+        Image logo2 = Image.getInstance("image/logo2.png");
+        logo2.scaleAbsolute(70f, 70f);
+        logo2.setAlignment(Element.ALIGN_RIGHT);
+        cell = new PdfPCell();
+        cell.addElement(logo2);
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        document.add(table);
+
         document.add(new Paragraph("Contrat"));
         document.add(new Paragraph("ID: " + contract.getContract_id()));
         document.add(new Paragraph("Date de création: " + contract.getCreationDate()));
@@ -136,6 +161,7 @@ public class ContractService implements IContractService {
         document.close();
         return null;
     }
+
 
     // ******************************************************** Envoyer contrat par mail
 
