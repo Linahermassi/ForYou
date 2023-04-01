@@ -3,6 +3,7 @@ package com.example.foryou.Services.Interfaces;
 import com.example.foryou.DAO.Entities.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IuserService {
     User add(User u);
@@ -11,7 +12,7 @@ public interface IuserService {
 
     List<User> selectAll();
 
-    User selectById(int userId);
+    User selectById(Long userId);
 
     void deleteById(int roleId);
 
@@ -26,4 +27,6 @@ public interface IuserService {
     User selectByUsername(String username);
 
     User selectByEmail(String email);
+
+    public Map<String, Object> getSolvencyRatio(Long id);
 }

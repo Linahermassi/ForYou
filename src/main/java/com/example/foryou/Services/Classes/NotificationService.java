@@ -2,6 +2,7 @@ package com.example.foryou.Services.Classes;
 
 import com.example.foryou.Services.Interfaces.INotificationService;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,12 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 @AllArgsConstructor
+@SpringBootApplication
 public class NotificationService implements INotificationService {
 
         // Envoyer des notifications par courrier électronique:
         private JavaMailSender javaMailSender;
+
         public void sendEmail(String to, String subject, String text) throws MessagingException {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -23,6 +26,11 @@ public class NotificationService implements INotificationService {
             helper.setText(text, true);
             javaMailSender.send(message);
         }
+
+
+
+
+
     }
 
 
