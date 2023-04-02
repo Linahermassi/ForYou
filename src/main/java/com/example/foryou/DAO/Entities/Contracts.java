@@ -16,23 +16,14 @@ import java.util.List;
 public class Contracts implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     int contract_id ;
+    int contract_id ;
     @Temporal(TemporalType.DATE)
-     Date creationDate;
+    Date creationDate;
     @Temporal(TemporalType.DATE)
-     Date startDate;
+    Date startDate;
     @Temporal(TemporalType.DATE)
-     Date exprirationDate;
-    float NetPremium;
-    float TTCPremium;
-    float ceilingAmout;
-    float refundAmount;
-    @Enumerated(EnumType.STRING)
-    PaymentFormality paymentFormality;
-    @Temporal(TemporalType.DATE)
-    Date paymentDate;
-    @Enumerated(EnumType.STRING)
-    PaymentType paymentType;
+    Date exprirationDate;
+    double ceilingAmount;
     int installementsnbr;
     int duration ;
     @Temporal(TemporalType.DATE)
@@ -49,4 +40,7 @@ public class Contracts implements Serializable {
     @ManyToOne
     @JsonIgnore
     Subproduct subproduct;
+    @OneToMany
+    @JsonIgnore
+    List<Paiement> paiementList;
 }
