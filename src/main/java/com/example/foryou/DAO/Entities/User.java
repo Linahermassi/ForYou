@@ -50,6 +50,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "assureur")
     @JsonIgnore
     List<Contracts> contractsA;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     List<Contracts> contractsList;
@@ -57,7 +58,12 @@ public class User implements Serializable {
     @JsonIgnore
     List<Sinister> sinisterList;
 
-
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="Participant")
+    @JsonIgnore
+     List<InscriptionEvent> InscriptionEvent;
+    @OneToMany(mappedBy = "organizer")
+    @JsonIgnore
+    List<Event> EventsCreated;
+Double Feedbackmark;
 
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("/Subproducts")
 public class SubproductRestController {
 
     private IsubproductService iSubproductService;
