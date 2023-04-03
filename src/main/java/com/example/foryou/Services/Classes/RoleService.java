@@ -52,7 +52,8 @@ public class RoleService implements IroleService {
     }
 
     @Override
-    public void deleteAll(List<Role> list) { roleRepository.deleteAll(list);
+    public void deleteAll(List<Role> list) {
+        roleRepository.deleteAll(list);
     }
 
     @Override

@@ -1,5 +1,4 @@
 package com.example.foryou.Services.Classes;
-
 import com.example.foryou.DAO.Entities.Contracts;
 import com.example.foryou.DAO.Entities.Notification;
 import com.example.foryou.DAO.Entities.Type;
@@ -8,12 +7,9 @@ import com.example.foryou.DAO.Repositories.ContractRepository;
 import com.example.foryou.Services.Interfaces.IContractService;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -75,20 +71,22 @@ public class ContractService implements IContractService {
     }
 
     // ********************************  Notifications
-        @Autowired
         private NotificationService notificationService;
 
         public void verifierContrats() throws MessagingException, javax.mail.MessagingException {
             List<Contracts> contrats = contractRepository.findByExprirationDate(LocalDate.now());
             for (Contracts contrat : contrats) {
-                String message = "Le contrat numéro " + contrat.getContract_id()+ " a expiré aujourd'hui.";
+                String message = "Cher(e) client(e), Je vous informe par le biais mail que votre contrat numéro " + contrat.getContract_id()+
+                        " a expiré aujourd'hui , Son état de renouvellement :" + contrat.isRenewable() +
+                        "Nous restons à votre entière disposition pour toute information complémentaire, " +
+                        "veuillez agréer, Monsieur,Madame, l'expression de nos salutations les plus distinguées";
                 Notification notification = new Notification();
                 notification.setNotifDescription(message);
                 ArrayList<User> listReceivers= new ArrayList<>();
                 listReceivers.add(contrat.getUser());
                 notification.setReceivers(listReceivers) ;
                 for (User receiver: listReceivers){
-                    notificationService.sendEmail(receiver.getEmail(), "Notification de contrat expiré", message);
+                    notificationService.sendEmail(receiver.getEmail(), "Contrat expiré", message);
                 }
             }
         }

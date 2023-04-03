@@ -2,7 +2,9 @@ package com.example.foryou.RestControllers;
 
 import com.example.foryou.DAO.Entities.User;
 import com.example.foryou.Services.Interfaces.IuserService;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,11 +13,11 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @CrossOrigin()
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @RequestMapping("User")
 public class UserRestController {
 
-
-    private IuserService iuserService;
+    IuserService iuserService;
 
     @GetMapping("/afficherUser")
     public List<User> afficherUser() {
@@ -30,7 +32,7 @@ public class UserRestController {
     }
 
     @GetMapping("/afficherUserAvecId/{id}")
-    public User afficherUserAvecId(@PathVariable int id) {
+    public User afficherUserAvecId(@PathVariable Long id) {
         return iuserService.selectById(id);
     }
 
@@ -80,5 +82,34 @@ public class UserRestController {
         return "Welcome!";
     }
 
+    @GetMapping("/{id}/solvency-ratio")
+    public ResponseEntity<?> getSolvencyRatio(@PathVariable Long id) {
+        return ResponseEntity.ok(iuserService.getSolvencyRatio(id));
+    }
 
+    @GetMapping("/{userId}/liquidity-ratio")
+    public ResponseEntity<Float> calculateLiquidityRatio(@PathVariable Long userId) {
+        User user = iuserService.selectById(userId);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        float liquidityRatio = user.calculateLiquidityRatio();
+
+        return ResponseEntity.ok(liquidityRatio);
+    }
+
+    @GetMapping("/{userId}/income-ratio")
+    public ResponseEntity<Float> calculateIncomeRatio(@PathVariable Long userId) {
+        User user = iuserService.selectById(userId);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        float liquidityRatio = user.calculateNetIncomeRatio();
+
+        return ResponseEntity.ok(liquidityRatio);
+    }
 }

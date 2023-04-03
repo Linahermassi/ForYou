@@ -18,14 +18,13 @@ import java.util.List;
 public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     int roleId;
+    int roleId;
     @Enumerated(EnumType.STRING)
-     RoleType roleType;
+    RoleType roleType;
 
     @OneToMany(mappedBy = "role")
     @JsonIgnore
     List<User> userList;
-
 
 
 }

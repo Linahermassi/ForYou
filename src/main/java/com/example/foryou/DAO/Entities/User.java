@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,25 +17,34 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class User implements Serializable {
+    private static final int EXPIRATION_TIME = 10;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     int userId;
+    Long userId;
     String username;
     @JsonIgnore
     String password;
-     String firstName;
-     String lastName;
-     String email;
-     String profession;
+    String firstName;
+    String lastName;
+    String email;
+    String profession;
     @Temporal(TemporalType.DATE)
-     Date birthDate;
-     String adress;
-     String region;
-     float salary;
-     long phone;
-     String expertiseDomain;
+    Date birthDate;
+    String adress;
+    String region;
+    float salary;
+    long phone;
+    String expertiseDomain;
     @Enumerated(EnumType.STRING)
-     Gender gender;
+    Gender gender;
+
+    float currentAssets;
+    float currentLiabilities;
+    float nonCurrentAssets;
+    float nonCurrentLiabilities;
+
+    float totalIncome;
+    float totalExpenses;
 
     @ManyToOne
     @JsonIgnore
@@ -63,27 +71,85 @@ public class User implements Serializable {
     List<Notification> notificationTList;
     @ManyToMany(mappedBy = "receivers")
     List<Notification> notificationRList;
+    String resetPasswordToken;
 
-    public <E> User(String javainuse, String $2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6, ArrayList<E> es) {
+
+    public float calculateSolvencyRatio() {
+        float totalAssets = currentAssets + nonCurrentAssets;
+        float totalLiabilities = currentLiabilities + nonCurrentLiabilities;
+        float solvencyRatio = 0.0f;
+
+        if (totalLiabilities != 0.0f) {
+            solvencyRatio = totalAssets / totalLiabilities;
+        }
+
+        return solvencyRatio;
     }
 
-    public String getUsername() {
-        return username;
+    public boolean isSolvent() {
+        boolean solvent = false;
+
+        if (currentAssets > currentLiabilities && nonCurrentAssets > nonCurrentLiabilities) {
+            solvent = true;
+        }
+
+        return solvent;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public boolean hasLiquidityProblems() {
+        boolean liquidityProblems = false;
+
+        if (currentAssets < currentLiabilities) {
+            liquidityProblems = true;
+        }
+
+        return liquidityProblems;
     }
 
-    public String getPassword() {
-        return password;
+    public float calculateLiquidityRatio() {
+        float currentRatio = calculateCurrentRatio();
+        float quickRatio = calculateQuickRatio();
+        float liquidityRatio = 0.0f;
+
+        if (quickRatio != 0.0f) {
+            liquidityRatio = (currentRatio - quickRatio) / quickRatio;
+        }
+
+        return liquidityRatio;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public float calculateCurrentRatio() {
+        float currentRatio = 0.0f;
+
+        if (currentLiabilities != 0.0f) {
+            currentRatio = currentAssets / currentLiabilities;
+        }
+
+        return currentRatio;
     }
 
+    public float calculateQuickRatio() {
+        float quickRatio = 0.0f;
+        float quickAssets = currentAssets - (currentLiabilities - nonCurrentLiabilities);
 
+        if (currentLiabilities != 0.0f) {
+            quickRatio = quickAssets / currentLiabilities;
+        }
+
+        return quickRatio;
+    }
+
+    public float calculateNetIncomeRatio() {
+
+        float netIncome = totalIncome - totalExpenses;
+        float netIncomeRatio = 0.0f;
+
+        if (totalIncome != 0.0f) {
+            netIncomeRatio = netIncome / totalIncome;
+        }
+
+        return netIncomeRatio;
+    }
 
 
 }
