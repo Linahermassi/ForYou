@@ -28,6 +28,12 @@ public class Contracts implements Serializable {
     int duration ;
     @Temporal(TemporalType.DATE)
     Date lastRenewalDate;
+    @Enumerated(EnumType.STRING)
+    PaymentFormality paymentFormality;
+    @Temporal(TemporalType.DATE)
+    Date paymentDate;
+    @Enumerated(EnumType.STRING)
+    PaymentType paymentType;
     boolean renewable;
     @ManyToOne
     @JsonIgnore
@@ -40,7 +46,4 @@ public class Contracts implements Serializable {
     @ManyToOne
     @JsonIgnore
     Subproduct subproduct;
-    @OneToMany
-    @JsonIgnore
-    List<Paiement> paiementList;
 }

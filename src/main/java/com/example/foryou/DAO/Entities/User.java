@@ -20,23 +20,38 @@ import java.util.List;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     int userId;
+    int userId;
     String username;
     @JsonIgnore
     String password;
-     String firstName;
-     String lastName;
-     String email;
-     String profession;
+    String firstName;
+    String lastName;
+    String email;
+    String profession;
     @Temporal(TemporalType.DATE)
-     Date birthDate;
-     String adress;
-     String region;
-     float salary;
-     long phone;
-     String expertiseDomain;
+    Date birthDate;
+    String adress;
+    String region;
+    float salary;
+    long phone;
+    String expertiseDomain;
+    int age;
+    //Client assurance auto
+    int anneesPermis ;
+    boolean aEuAccident ;
+    int nbSinistres;
+    // Client assurance agriculture
+    int surfaceExploitation ;
+    int nbAnimaux ;
+    int nbInstallations ;
+    int valeurCultures;
+    // Client assurance credit
+    int DureeCredit;
+    int MontantCredit;
     @Enumerated(EnumType.STRING)
-     Gender gender;
+    Type Insurancetype;
+    @Enumerated(EnumType.STRING)
+    Gender gender;
     @ManyToOne
     @JsonIgnore
     User user;
@@ -64,8 +79,10 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "receiver")
     @JsonIgnore
     List<Notification> notificationRList;
+    @OneToMany(mappedBy = "client")
+    @JsonIgnore
+    List<Credit> creditList;
 
     public <E> User(String javainuse, String $2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6, ArrayList<E> es) {
     }
-
 }

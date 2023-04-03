@@ -29,12 +29,13 @@ public class Credit implements Serializable {
      float refundAmount;
      int nbrTranches;
      String methodPayment;
-
     @OneToOne
     @JsonIgnore
     Credit credit;
     @OneToMany(mappedBy = "credit")
     @JsonIgnore
     List<Tranche> trancheList;
+    @ManyToOne
+    User client;
 
 }
