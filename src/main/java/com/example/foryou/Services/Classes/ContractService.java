@@ -2,6 +2,7 @@ package com.example.foryou.Services.Classes;
 import com.example.foryou.DAO.Entities.*;
 import com.example.foryou.DAO.Repositories.ContractRepository;
 import com.example.foryou.DAO.Repositories.NotificationRepository;
+import com.example.foryou.DAO.Repositories.UserRepository;
 import com.example.foryou.Services.Interfaces.IContractService;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -10,6 +11,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -27,14 +31,23 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Phrase;
+
 @Service
 @AllArgsConstructor
 public class ContractService implements IContractService {
     private ContractRepository contractRepository;
+    UserRepository userRepository;
 
     /////////////////////////Crud
     @Override
     public Contracts addContract(Contracts contract) {
+        String username = this.getCurrentUserName();
+        User user = this.getUser(username);
+        contract.setUser(user);
         return contractRepository.save(contract);
     }
 
@@ -108,15 +121,14 @@ public class ContractService implements IContractService {
         Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         List<Contracts> contrats = contractRepository.findByExprirationDate(date);
         for (Contracts contrat : contrats) {
-            String message = "Cher(e) client(e), Je vous informe par le biais mail que votre contrat numéro " + contrat.getContract_id() +
-                    " a expiré aujourd'hui , Son état de renouvellement :" + contrat.isRenewable() +
-                    "Nous restons à votre entière disposition pour toute information complémentaire, " +
+            String message = "Cher(e) client(e),/n /n" +
+                    " Je vous informe par le biais mail que votre contrat numéro " + contrat.getContract_id() +
+                    " a expiré aujourd'hui. /n Son état de renouvellement : " + contrat.isRenewable() +"/n"+
+                    "Nous restons à votre entière disposition pour toute information complémentaire,/n/n " +
                     "veuillez agréer, Monsieur,Madame, l'expression de nos salutations les plus distinguées";
             notification.setNotifDescription(message);
-           // ArrayList<User> listReceivers = new ArrayList<>();
                 User receiver = contrat.getUser();
                 notificationService.sendEmail(receiver.getEmail(), "Contrat expiré", message);
-            // *********** Ajout de notif
             notification.setTypeNotif(TypeNotif.CONTRACT);
             notification.setNotifDate(date);
             notification.setReceiver(receiver);
@@ -126,38 +138,37 @@ public class ContractService implements IContractService {
     // ********************************************************  Generer un contrat pdf
     public File genererContratPDF(Contracts contract) throws IOException, DocumentException {
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("contrat.pdf"));
+        PdfWriter writer =PdfWriter.getInstance(document, new FileOutputStream("contrat.pdf"));
         document.open();
+        Paragraph title = new Paragraph("ForYou microInsurance", new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD));
+        title.setAlignment(Element.ALIGN_CENTER);
+        document.add(title);
 
         //Création d'une table avec deux colonnes pour les logos
         PdfPTable table = new PdfPTable(2);
         table.setWidthPercentage(100);
         PdfPCell cell = new PdfPCell();
 
-        //Ajouter le premier logo à la première cellule
+        // Logo
         Image logo1 = Image.getInstance("image/logo1.png");
         logo1.scaleAbsolute(50f, 50f);
         logo1.setAlignment(Element.ALIGN_LEFT);
         cell.addElement(logo1);
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
-
-        //Ajouter le deuxième logo à la deuxième cellule
-        Image logo2 = Image.getInstance("image/logo2.png");
-        logo2.scaleAbsolute(70f, 70f);
-        logo2.setAlignment(Element.ALIGN_RIGHT);
-        cell = new PdfPCell();
-        cell.addElement(logo2);
-        cell.setBorder(Rectangle.NO_BORDER);
-        table.addCell(cell);
-
         document.add(table);
 
-        document.add(new Paragraph("Contrat"));
+
+        document.add(new Paragraph("Je"));
         document.add(new Paragraph("ID: " + contract.getContract_id()));
         document.add(new Paragraph("Date de création: " + contract.getCreationDate()));
         document.add(new Paragraph("Date d'expiration: " + contract.getExprirationDate()));
         // Ajouter d'autres informations du contrat
+        // Adding footer with page number and date
+        Paragraph footer = new Paragraph("Page " + writer.getPageNumber() + " | " + new Date().toString(), FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL));
+        footer.setAlignment(Element.ALIGN_CENTER);
+        document.add(footer);
+        // Closing the document
         document.close();
         return null;
     }
@@ -207,6 +218,23 @@ public class ContractService implements IContractService {
         message.setContent(multipart);
         // Envoyer le message
         Transport.send(message);
+    }
+    @Override
+    public String getCurrentUserName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        } else {
+            return principal.toString();
+        }
+    }
+    @Override
+    public User getUser(String username) {
+        return userRepository.findByUsername(username);
     }
     }
 

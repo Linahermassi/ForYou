@@ -30,5 +30,7 @@ public interface IContractService {
     public File genererContratPDF(Contracts contract) throws IOException, DocumentException ;
     public void envoyerContratParEmail(User user, Contracts  contract) throws javax.mail.MessagingException ;
 
+    String getCurrentUserName();
 
+    User getUser(String email);
 }

@@ -39,6 +39,7 @@ public class Contracts implements Serializable {
     @JsonIgnore
     User assureur;
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     User user;
     @OneToMany(mappedBy = "contract")
     @JsonIgnore
