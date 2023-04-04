@@ -1,5 +1,6 @@
 package com.example.foryou.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +31,15 @@ public class User implements Serializable {
      String adress;
      long phone;
      String expertiseDomain;
+     float salaire;
+     String region;
     @Enumerated(EnumType.STRING)
      Gender gender;
     @ManyToOne
+    @JsonIgnoreProperties("user")
     User user;
     @OneToMany
+    @JsonIgnore
     List<User> userList;
     @ManyToOne
     Role role;
@@ -45,6 +51,10 @@ public class User implements Serializable {
     List<Contracts> contractsList;
     @OneToMany(mappedBy = "client")
     List<Sinister> sinisterList;
+    @OneToMany(mappedBy = "client")
+    @JsonIgnore
+    List<Credit> creditList;
+
 
 
 }

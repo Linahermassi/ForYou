@@ -1,5 +1,9 @@
 package com.example.foryou.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.sun.istack.internal.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,10 +19,13 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "creditId")
+
 public class Credit implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      int creditId;
+
      float amount;
      float interestRate;
     @Temporal(TemporalType.DATE)
@@ -26,11 +33,13 @@ public class Credit implements Serializable {
     @Temporal(TemporalType.DATE)
      Date endtDate;
      float refundAmount;
-     int nbrTranches;
-     String methodPayment;
-    @OneToOne
-    Credit credit;
-    @OneToMany(mappedBy = "credit")
-    List<Tranche> trancheList;
+     int nb_years;
+     float rentability;
+     String type;
+    @Enumerated(EnumType.STRING)
+     StateCredit status;
+    @ManyToOne
+    User client;
+
 
 }

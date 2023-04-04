@@ -28,8 +28,7 @@ public class Sinister implements Serializable {
      Contracts contract;
      @OneToMany(mappedBy = "sinister")
      List <Offer> offerList;
-     @OneToOne(mappedBy = "credit")
-     Credit credit;
+
 
 
 }
