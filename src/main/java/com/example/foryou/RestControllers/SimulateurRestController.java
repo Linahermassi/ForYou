@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/Simulator")
-public class CarValuationController {
+public class SimulateurRestController {
 
     // Estimated lifespan and estimated lifetime KM for each car type
     private static final int ECONOMY_LIFESPAN = 12;
