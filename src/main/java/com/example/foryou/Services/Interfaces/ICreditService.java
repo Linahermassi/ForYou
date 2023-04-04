@@ -14,4 +14,27 @@ public interface ICreditService {
     List<Credit> addAll(List<Credit> list);
     void deleteAll(List<Credit>list);
     void deleteAll();
+
+    /*  public static int calculateYearsBetween(Date date1, Date date2) {
+
+          LocalDate localDate1 = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+          LocalDate localDate2 = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+
+          return Math.abs(localDate1.getYear() - localDate2.getYear());
+      }*/
+
+
+    void Calcul1(Credit c);
+
+    void Calcul2(Credit c);
+
+    void Rentabilité();
+
+    List<Credit> Scoring();
+
+    void StatusCredit();
+
+    float Profit(String type, String region);
 }
