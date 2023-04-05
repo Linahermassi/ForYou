@@ -121,10 +121,10 @@ public class ContractService implements IContractService {
         Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         List<Contracts> contrats = contractRepository.findByExprirationDate(date);
         for (Contracts contrat : contrats) {
-            String message = "Cher(e) client(e),/n /n" +
+            String message = "Cher(e) client(e),\n \n" +
                     " Je vous informe par le biais mail que votre contrat numéro " + contrat.getContract_id() +
-                    " a expiré aujourd'hui. /n Son état de renouvellement : " + contrat.isRenewable() +"/n"+
-                    "Nous restons à votre entière disposition pour toute information complémentaire,/n/n " +
+                    " a expiré aujourd'hui. \n Son état de renouvellement : " + contrat.isRenewable() +"\n"+
+                    "Nous restons à votre entière disposition pour toute information complémentaire,\n\n " +
                     "veuillez agréer, Monsieur,Madame, l'expression de nos salutations les plus distinguées";
             notification.setNotifDescription(message);
                 User receiver = contrat.getUser();
@@ -143,7 +143,7 @@ public class ContractService implements IContractService {
         // Logo
         Image logo = Image.getInstance("image/logo1.png");
         logo.scaleAbsolute(70f, 70f);
-        logo.setAlignment(Element.ALIGN_CENTER);
+        logo.setAlignment(Element.ALIGN_RIGHT);
         document.add(logo);
         //Titre
         Paragraph title = new Paragraph("ForYou microInsurance\n\n\n", new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD));
@@ -160,14 +160,13 @@ public class ContractService implements IContractService {
         document.add(new Paragraph("Catastrophes naturelles"));
         document.add(new Paragraph("Actes de terrorisme "));
         document.add(new Paragraph("Négligence du souscripteur"));
-        document.add(new Paragraph("\n4.Durée du contrat :\n :\n\n", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
+        document.add(new Paragraph("\n4.Durée du contrat :\n\n", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
         document.add(new Paragraph("Ce contrat est valide du " + contract.getStartDate()+" Jusqu'au "+ contract.getExprirationDate()));
         // Adding footer with page number and date
         /*Paragraph footer = new Paragraph("Page " + writer.getPageNumber() + " | " + new Date().toString(), FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL));
         footer.setAlignment(Element.ALIGN_CENTER);
         document.add(footer);*/
-        Paragraph footer = new Paragraph("Page " + writer.getPageNumber() + " | " + new Date().toString() + " " +
-                "| Nous vous rappelons que les informations communiquées dans ce contrat sont confidentielles et " +
+        Paragraph footer = new Paragraph("\n\n\n\n\n\n\n\n\n\n\nPage " + writer.getPageNumber() + " | " + new Date().toString() +"| \nNous vous rappelons que les informations communiquées dans ce contrat sont confidentielles et " +
                 "réservées à l'usage exclusif de l'assureur et du souscripteur. " +
                 "Conformément à la réglementation en vigueur, vous disposez d'un droit d'accès, de rectification et d'opposition pour" +
                 " toute information vous concernant. Pour exercer ces droits, vous pouvez nous contacter à l'adresse suivante [Foryoumicroinsurance@gamil.com]." +
@@ -210,7 +209,8 @@ public class ContractService implements IContractService {
 
         // Créer le contenu du message
         MimeBodyPart messageBodyPart = new MimeBodyPart();
-        messageBodyPart.setText("Bonjour "+ user.getLastName()+" "+ user.getFirstName() + ",\n\nVeuillez trouver ci-joint le contrat \"" + contract.getContract_id() + "\".");
+        messageBodyPart.setText("cher(e) client(e), "+ user.getLastName()+" "+ user.getFirstName() + ",\n\nVous trouverez ci-joint votre nouveau contrat" +
+                "d'assurance. \n Merci pour votre confiance\n\n - - - - - - - - - - - - - - - - - - - - - - \nVotra assurance ForYou micoInsurance");
 
         // Créer la pièce jointe PDF
         MimeBodyPart pdfAttachment = new MimeBodyPart();
