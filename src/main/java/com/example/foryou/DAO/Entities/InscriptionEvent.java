@@ -5,8 +5,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -15,17 +13,15 @@ import java.util.Date;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Tranche implements Serializable {
+public class InscriptionEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int trancheId;
-    float Amount;
-    @Temporal(TemporalType.DATE)
-    Date PaymentDate;
-
+    int inscription_event_id;
     @ManyToOne
-    @JsonIgnore
-    Credit credit;
 
+    User Participant;
+    @ManyToOne
 
+    Event event;
+    Integer Mark;
 }

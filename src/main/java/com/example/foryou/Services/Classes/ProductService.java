@@ -52,7 +52,11 @@ public class ProductService implements IproductService {
     public void deleteAll(List<Product> list) {
         productRepository.deleteAll(list);
     }
+    @Override
     public void deleteAll() {
         productRepository.deleteAll();
     }
+
+
+
 }

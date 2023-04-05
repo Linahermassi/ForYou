@@ -33,9 +33,7 @@ public class Sinister implements Serializable {
      @OneToMany(mappedBy = "sinister")
      @JsonIgnore
      List <Offer> offerList;
-     @OneToOne(mappedBy = "credit")
-     @JsonIgnore
-     Credit credit;
+
 
 
 

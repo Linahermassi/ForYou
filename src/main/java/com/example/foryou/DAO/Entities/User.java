@@ -1,6 +1,9 @@
 package com.example.foryou.DAO.Entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
+import com.fasterxml.jackson.annotation.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,6 +19,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User implements Serializable {
     private static final int EXPIRATION_TIME = 10;
     @Id
@@ -29,12 +33,13 @@ public class User implements Serializable {
     String email;
     String profession;
     @Temporal(TemporalType.DATE)
-    Date birthDate;
-    String adress;
-    String region;
-    float salary;
-    long phone;
-    String expertiseDomain;
+     Date birthDate;
+     String adress;
+     long phone;
+     String expertiseDomain;
+     float salaire;
+     String region;
+
     @Enumerated(EnumType.STRING)
     Gender gender;
 
@@ -47,7 +52,11 @@ public class User implements Serializable {
     float totalExpenses;
 
     @ManyToOne
+
     @JsonIgnore
+
+    @JsonIgnoreProperties("user")
+
     User user;
     @OneToMany
     @JsonIgnore
@@ -61,17 +70,32 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "assureur")
     @JsonIgnore
     List<Contracts> contractsA;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     List<Contracts> contractsList;
     @OneToMany(mappedBy = "client")
     @JsonIgnore
     List<Sinister> sinisterList;
+
+
     @OneToMany(mappedBy = "transmitter")
     List<Notification> notificationTList;
     @ManyToMany(mappedBy = "receivers")
     List<Notification> notificationRList;
+    @OneToMany(mappedBy = "client")
+    @JsonIgnore
+    List<Credit> creditList;
     String resetPasswordToken;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="Participant")
+    @JsonIgnore
+    List<InscriptionEvent> InscriptionEvent;
+    @OneToMany(mappedBy = "organizer")
+    @JsonIgnore
+    List<Event> EventsCreated;
+    Double Feedbackmark;
+
 
 
     public float calculateSolvencyRatio() {
@@ -150,6 +174,11 @@ public class User implements Serializable {
 
         return netIncomeRatio;
     }
+
+
+
+
+
 
 
 }
