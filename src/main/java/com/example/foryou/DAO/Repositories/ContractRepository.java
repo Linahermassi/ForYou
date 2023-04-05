@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface ContractRepository extends JpaRepository<Contracts,Integer> {
     // ********** Trouver contrat par date d'expiration
-    List<Contracts> findByExprirationDate(LocalDate expirationDate);
+    List<Contracts> findByExprirationDate(Date expirationDate);
     //*********** Filtrage des contracts par type de sinister
     @Query(value = "select c from Contracts c , Sinister s where s.contract.contract_id = c.contract_id and s.typeSinister=?1")
     List<Contracts> selectContractByType(Type type);

@@ -1,14 +1,11 @@
 package com.example.foryou.DAO.Entities;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,6 +27,8 @@ public class Contracts implements Serializable {
     float TTCPremium;
     float ceilingAmout;
     float refundAmount;
+    @Enumerated(EnumType.STRING)
+    PaymentFormality paymentFormality;
     @Temporal(TemporalType.DATE)
     Date paymentDate;
     @Enumerated(EnumType.STRING)
@@ -42,8 +41,7 @@ public class Contracts implements Serializable {
     @ManyToOne
     @JsonIgnore
     User assureur;
-    @ManyToOne
-    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
     User user;
     @OneToMany(mappedBy = "contract")
     @JsonIgnore
@@ -51,5 +49,4 @@ public class Contracts implements Serializable {
     @ManyToOne
     @JsonIgnore
     Subproduct subproduct;
-
 }
