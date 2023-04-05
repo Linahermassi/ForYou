@@ -1,11 +1,17 @@
 package com.example.foryou.Services.Classes;
 
 import com.example.foryou.DAO.Entities.Reclamation;
+import com.example.foryou.DAO.Entities.Status;
+import com.example.foryou.RestControllers.ReclamationRestController;
 import com.example.foryou.Services.Interfaces.IReclamationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.example.foryou.DAO.Repositories.ReclamationRepository;
+
+import java.time.LocalDate;
 import java.util.List;
+
+import static com.example.foryou.RestControllers.ReclamationRestController.getEmotionalState;
 
 @Service
 @AllArgsConstructor
@@ -15,6 +21,9 @@ public class ReclamationService implements IReclamationService {
 
     @Override
     public Reclamation add(Reclamation rec) {
+
+        rec.setEtat(getEmotionalState(rec.getDetails()));
+        rec.setCreationDate(LocalDate.now());
         return reclamationRepository.save(rec);
     }
 
@@ -55,6 +64,11 @@ public class ReclamationService implements IReclamationService {
     @Override
     public void deleteAll() {
         reclamationRepository.deleteAll();
+    }
+
+    @Override
+    public List<Reclamation> findByStatus(Status status) {
+        return reclamationRepository.findByStatus(status);
     }
 
 }
