@@ -70,12 +70,14 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "assureur")
     @JsonIgnore
     List<Contracts> contractsA;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     List<Contracts> contractsList;
     @OneToMany(mappedBy = "client")
     @JsonIgnore
     List<Sinister> sinisterList;
+
 
     @OneToMany(mappedBy = "transmitter")
     List<Notification> notificationTList;
@@ -85,6 +87,14 @@ public class User implements Serializable {
     @JsonIgnore
     List<Credit> creditList;
     String resetPasswordToken;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="Participant")
+    @JsonIgnore
+    List<InscriptionEvent> InscriptionEvent;
+    @OneToMany(mappedBy = "organizer")
+    @JsonIgnore
+    List<Event> EventsCreated;
+    Double Feedbackmark;
 
 
 
@@ -164,6 +174,7 @@ public class User implements Serializable {
 
         return netIncomeRatio;
     }
+
 
 
 

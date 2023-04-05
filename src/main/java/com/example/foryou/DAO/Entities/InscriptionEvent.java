@@ -5,8 +5,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
 
 @Getter
 @Setter
@@ -15,18 +13,15 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Product implements Serializable {
+public class InscriptionEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     int poductid;
-     String name;
-     String description;
-     Float minimunAmount;
-     //String formulaStr;
-    @Enumerated(EnumType.STRING)
-     Type typeProduct;
+    int inscription_event_id;
+    @ManyToOne
 
-    @OneToMany(mappedBy = "product")
-    @JsonIgnore
-    List<Subproduct> subproductList;
+    User Participant;
+    @ManyToOne
+
+    Event event;
+    Integer Mark;
 }
