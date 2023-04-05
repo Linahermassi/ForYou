@@ -1,5 +1,7 @@
 package com.example.foryou.Services.Interfaces;
 import com.example.foryou.DAO.Entities.Credit;
+import com.example.foryou.DAO.Entities.User;
+
 import java.util.List;
 
 
@@ -37,4 +39,8 @@ public interface ICreditService {
     void StatusCredit();
 
     float Profit(String type, String region);
+
+    String getCurrentUserName();
+
+    User getUser(String username);
 }

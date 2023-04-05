@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -28,20 +29,20 @@ public class CreditRestController {
     private ICreditService iCreditService;
     private CreditService creditService;
     public boolean hasEightDigits(String type) {
-        return (type.length() >= 5 );}
+        return (type.length() >= 3 );}
     //@EventListener(ApplicationReadyEvent.class)
     @PostMapping("/ajouterCredit")
-    public ResponseEntity<String> add(@RequestBody Credit credit){
-      /*  boolean testType = hasEightDigits(credit.getType());
+    public ResponseEntity<?> add(@RequestBody Credit credit) throws MessagingException{
+        boolean testType = hasEightDigits(credit.getType());
         boolean testDate = credit.getStartDate().before(credit.getEndtDate());
         boolean testAmount = credit.getAmount()>0.0;
         boolean testNbrA = credit.getNb_years()>0;
 
         if(!testType)
         {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("the credit type must contain at least 5 characters");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("the credit type must contain at least 3 characters");
         }
-        else if (!testDate) {
+         if (!testDate) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The start date must be before the end date");
         }
         else if (!testAmount) {
@@ -51,8 +52,8 @@ public class CreditRestController {
         else if (!testNbrA) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le nombre d'années doit etre superieur à 0 ");
 
-        }*/
-        iCreditService.add(credit);
+        }
+        else iCreditService.add(credit);
         return ResponseEntity.ok("Added successfully.");
     }
 
