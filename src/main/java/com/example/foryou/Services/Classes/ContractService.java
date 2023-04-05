@@ -140,34 +140,41 @@ public class ContractService implements IContractService {
         Document document = new Document();
         PdfWriter writer =PdfWriter.getInstance(document, new FileOutputStream("contrat.pdf"));
         document.open();
-        Paragraph title = new Paragraph("ForYou microInsurance", new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD));
+        // Logo
+        Image logo = Image.getInstance("image/logo1.png");
+        logo.scaleAbsolute(70f, 70f);
+        logo.setAlignment(Element.ALIGN_CENTER);
+        document.add(logo);
+        //Titre
+        Paragraph title = new Paragraph("ForYou microInsurance\n\n\n", new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD));
         title.setAlignment(Element.ALIGN_CENTER);
         document.add(title);
 
-        //Création d'une table avec deux colonnes pour les logos
-        PdfPTable table = new PdfPTable(2);
-        table.setWidthPercentage(100);
-        PdfPCell cell = new PdfPCell();
-
-        // Logo
-        Image logo1 = Image.getInstance("image/logo1.png");
-        logo1.scaleAbsolute(50f, 50f);
-        logo1.setAlignment(Element.ALIGN_LEFT);
-        cell.addElement(logo1);
-        cell.setBorder(Rectangle.NO_BORDER);
-        table.addCell(cell);
-        document.add(table);
-
-
-        document.add(new Paragraph("Je"));
-        document.add(new Paragraph("ID: " + contract.getContract_id()));
-        document.add(new Paragraph("Date de création: " + contract.getCreationDate()));
-        document.add(new Paragraph("Date d'expiration: " + contract.getExprirationDate()));
-        // Ajouter d'autres informations du contrat
+        document.add(new Paragraph("1.Parties au contrat : \n\n", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
+        document.add(new Paragraph("Assureur : ForYou microInsurance "));
+        document.add(new Paragraph("Souscripteur : "+ contract.getUser().getLastName() +" "+contract.getUser().getFirstName()));
+        document.add(new Paragraph("\n2.Objet du contrat : \n\n", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
+        document.add(new Paragraph("Type d'assurance :"+ contract.getUser().getInsurancetype()));
+        document.add(new Paragraph("Montant de la garantie :"+ contract.getCeilingAmount()));
+        document.add(new Paragraph("\n3.Exclusions de garanties :\n\n", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
+        document.add(new Paragraph("Catastrophes naturelles"));
+        document.add(new Paragraph("Actes de terrorisme "));
+        document.add(new Paragraph("Négligence du souscripteur"));
+        document.add(new Paragraph("\n4.Durée du contrat :\n :\n\n", new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD)));
+        document.add(new Paragraph("Ce contrat est valide du " + contract.getStartDate()+" Jusqu'au "+ contract.getExprirationDate()));
         // Adding footer with page number and date
-        Paragraph footer = new Paragraph("Page " + writer.getPageNumber() + " | " + new Date().toString(), FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL));
+        /*Paragraph footer = new Paragraph("Page " + writer.getPageNumber() + " | " + new Date().toString(), FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL));
+        footer.setAlignment(Element.ALIGN_CENTER);
+        document.add(footer);*/
+        Paragraph footer = new Paragraph("Page " + writer.getPageNumber() + " | " + new Date().toString() + " " +
+                "| Nous vous rappelons que les informations communiquées dans ce contrat sont confidentielles et " +
+                "réservées à l'usage exclusif de l'assureur et du souscripteur. " +
+                "Conformément à la réglementation en vigueur, vous disposez d'un droit d'accès, de rectification et d'opposition pour" +
+                " toute information vous concernant. Pour exercer ces droits, vous pouvez nous contacter à l'adresse suivante [Foryoumicroinsurance@gamil.com]." +
+                " Ce contrat est régi par la loi française et tout litige en découlant sera soumis à la compétence des tribunaux tunisiens.", FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL));
         footer.setAlignment(Element.ALIGN_CENTER);
         document.add(footer);
+
         // Closing the document
         document.close();
         return null;
