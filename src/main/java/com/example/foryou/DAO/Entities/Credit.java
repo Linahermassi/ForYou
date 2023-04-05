@@ -42,6 +42,4 @@ public class Credit implements Serializable {
     @ManyToOne
     User client;
 
-
-
 }
