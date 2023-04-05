@@ -1,5 +1,7 @@
 package com.example.foryou.RestControllers;
+import com.example.foryou.DAO.Entities.Reclamation;
 import com.example.foryou.DAO.Entities.Response;
+import com.example.foryou.Services.Interfaces.IReclamationService;
 import com.example.foryou.Services.Interfaces.IResponseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +14,12 @@ import java.util.List;
 @RequestMapping("/Response")
 public class ResponseRestController {
     private IResponseService iResponseService;
+    private IReclamationService iReclamationService;
     @PostMapping("/ajouterResponse")
-    public ResponseEntity<String> addResponse(@RequestBody Response response) {
+    public ResponseEntity<String> addResponse(@RequestBody Response response, @RequestParam int reclamationId) {
+        Reclamation reclamation;
+        reclamation = iReclamationService.selectById(reclamationId);
+        response.setReclamation(reclamation);
         iResponseService.addResp(response);
         return ResponseEntity.ok("Added successfully.");
     }

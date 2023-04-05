@@ -2,7 +2,10 @@ package com.example.foryou.DAO.Entities;
 
 
 
+
 import com.fasterxml.jackson.annotation.*;
+
+
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -64,7 +67,8 @@ public class User implements Serializable {
     @ManyToOne
     @JsonIgnore
     Role role;
-    @ManyToMany(mappedBy = "userList")
+
+    @OneToMany(mappedBy = "client")
     @JsonIgnore
     List<Reclamation> reclamationList;
     @OneToMany(mappedBy = "assureur")
