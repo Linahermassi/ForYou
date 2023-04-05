@@ -43,7 +43,7 @@ public class EventRestController {
     }
 
     @PostMapping("/ajouterEventavecuser")
-    public Event addEvent(@RequestBody Event Event, @RequestParam int UserId) {
+    public Event addEvent(@RequestBody Event Event, @RequestParam Long UserId) {
         User organizer;
         organizer = iuserService.selectById(UserId);
         Event.setOrganizer(organizer);
