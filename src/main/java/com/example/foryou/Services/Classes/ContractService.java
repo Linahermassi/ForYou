@@ -115,7 +115,7 @@ public class ContractService implements IContractService {
 
     // ********************************************************  Envoi du mail
     @Scheduled(cron = "0 0 8-9 * * ?")
-    //@Scheduled(cron = "*/10 * * * * *") //pour le test 
+    //@Scheduled(cron = "*/10 * * * * *") //pour le test
 
     public void verifierContrats() throws MessagingException, javax.mail.MessagingException {
         Notification notification = new Notification();
