@@ -28,6 +28,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long userId;
+
     String username;
     @JsonIgnore
     String password;
@@ -53,6 +54,22 @@ public class User implements Serializable {
 
     float totalIncome;
     float totalExpenses;
+
+    int age;
+    //Client assurance auto
+    int anneesPermis ;
+    boolean aEuAccident ;
+    int nbSinistres;
+    // Client assurance agriculture
+    int surfaceExploitation ;
+    int nbAnimaux ;
+    int nbInstallations ;
+    int valeurCultures;
+    // Client assurance credit
+    int DureeCredit;
+    int MontantCredit;
+    @Enumerated(EnumType.STRING)
+    Type Insurancetype;
 
     @ManyToOne
 
@@ -91,8 +108,6 @@ public class User implements Serializable {
     @JsonIgnore
     List<Credit> creditList;
     String resetPasswordToken;
-
-
 
     public float calculateSolvencyRatio() {
         float totalAssets = currentAssets + nonCurrentAssets;
@@ -169,5 +184,4 @@ public class User implements Serializable {
 
         return netIncomeRatio;
     }
-
 }
