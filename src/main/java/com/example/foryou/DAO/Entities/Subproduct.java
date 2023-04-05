@@ -1,5 +1,6 @@
 package com.example.foryou.DAO.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,9 +21,14 @@ public class Subproduct implements Serializable {
     int subproductid;
     String name;
     float scoring;
+
     @ManyToOne
+    @JsonIgnore
     Product product;
     @OneToMany(mappedBy = "subproduct")
+    @JsonIgnore
     List<Contracts> contractsList;
+
+
 
 }

@@ -25,6 +25,7 @@ public class Reclamation implements Serializable {
      String title;
      String category;
      String details;
+
    @Enumerated(EnumType.STRING)
     Status status = Status.EN_ATTENTE;
     @Enumerated(EnumType.STRING)
@@ -33,8 +34,13 @@ public class Reclamation implements Serializable {
     @ManyToOne
     @JsonIgnore
     User client;
+
+
      @OneToOne(mappedBy = "reclamation")
-    Response response;
+     @JsonIgnore
+     Response response;
+
+
 
 
 
