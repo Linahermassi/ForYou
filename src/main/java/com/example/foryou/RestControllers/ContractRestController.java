@@ -1,5 +1,4 @@
 package com.example.foryou.RestControllers;
-
 import com.example.foryou.DAO.Entities.Contracts;
 import com.example.foryou.DAO.Entities.Type;
 import com.example.foryou.Services.Interfaces.IContractService;
@@ -7,9 +6,6 @@ import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -77,10 +73,10 @@ public class ContractRestController {
         return ResponseEntity.ok("Deleted successfully.");
     }
     /////////////////////////////////////
-        @GetMapping("/verifier")
+        @GetMapping("/MailContartExpiré")
         public ResponseEntity<String> verifierContrats() throws MessagingException, javax.mail.MessagingException {
             iContractService.verifierContrats();
-            return ResponseEntity.ok("La vérification des contrats a été effectuée avec succès.");
+            return ResponseEntity.ok("L'envoi du mail été effectué avec succès.");
         }
 
     }

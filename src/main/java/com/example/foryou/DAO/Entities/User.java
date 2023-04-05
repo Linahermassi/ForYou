@@ -84,8 +84,10 @@ public class User implements Serializable {
 
 
     @OneToMany(mappedBy = "transmitter")
+    @JsonIgnore
     List<Notification> notificationTList;
-    @ManyToMany(mappedBy = "receivers")
+    @OneToMany(mappedBy = "receiver")
+    @JsonIgnore
     List<Notification> notificationRList;
     @OneToMany(mappedBy = "client")
     @JsonIgnore
@@ -113,7 +115,6 @@ public class User implements Serializable {
 
         return solvencyRatio;
     }
-
     public boolean isSolvent() {
         boolean solvent = false;
 
@@ -178,11 +179,5 @@ public class User implements Serializable {
 
         return netIncomeRatio;
     }
-
-
-
-
-
-
 
 }
