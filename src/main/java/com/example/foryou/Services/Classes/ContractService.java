@@ -115,13 +115,15 @@ public class ContractService implements IContractService {
 
     // ********************************************************  Envoi du mail
     @Scheduled(cron = "0 0 8-9 * * ?")
+    //@Scheduled(cron = "*/10 * * * * *") //pour le test 
+
     public void verifierContrats() throws MessagingException, javax.mail.MessagingException {
         Notification notification = new Notification();
         LocalDate localDate = LocalDate.now();
         Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         List<Contracts> contrats = contractRepository.findByExprirationDate(date);
         for (Contracts contrat : contrats) {
-            String message = "Cher(e) client(e),\n \n" +
+            String message = "Cher(e) client(e),\n\n" +
                     " Je vous informe par le biais mail que votre contrat numéro " + contrat.getContract_id() +
                     " a expiré aujourd'hui. \n Son état de renouvellement : " + contrat.isRenewable() +"\n"+
                     "Nous restons à votre entière disposition pour toute information complémentaire,\n\n " +
@@ -183,11 +185,16 @@ public class ContractService implements IContractService {
     // ******************************************************** Envoyer contrat par mail
 
     public void envoyerContratParEmail(User user, Contracts  contract) throws javax.mail.MessagingException {
-        String smtpHost = "smtp.gmail.com";
+        /*String smtpHost = "smtp.gmail.com";
         String smtpPort = "587";
         String smtpUsername = "lina.hermessi9@gmail.com";
         String smtpPassword = "vxuyjkgyopoliymx";
-        String sender = "lina.hermessi9@gmail.com";
+        String sender = "lina.hermessi9@gmail.com";*/
+        String smtpHost = "smtp.gmail.com";
+        String smtpPort = "587";
+        String smtpUsername = "foryou.microinsurance@gmail.com";
+        String smtpPassword = "cqpdoedhcchseumd";
+        String sender = "foryou.microinsurance@gmail.com";
         String subject = "Nouveau contrat";
 
         Properties props = new Properties();

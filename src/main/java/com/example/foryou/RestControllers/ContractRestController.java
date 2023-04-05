@@ -85,7 +85,7 @@ public class ContractRestController {
         return ResponseEntity.ok("Deleted successfully.");
     }
     /////////////////////////////////////
-        @GetMapping("/MailContartExpiré")
+        @GetMapping("/MailContartExpire")
         public ResponseEntity<String> verifierContrats() throws MessagingException, javax.mail.MessagingException {
             iContractService.verifierContrats();
             return ResponseEntity.ok("L'envoi du mail été effectué avec succès.");
