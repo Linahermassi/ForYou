@@ -40,6 +40,7 @@ public class Credit implements Serializable {
     @Enumerated(EnumType.STRING)
      StateCredit status;
     @ManyToOne
+    @JsonIgnore
     User client;
 
 
