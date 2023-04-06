@@ -2,16 +2,26 @@ package com.example.foryou.Services.Classes;
 import com.example.foryou.DAO.Entities.Contracts;
 import com.example.foryou.DAO.Entities.User;
 import com.example.foryou.Services.Interfaces.IContractService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.stripe.Stripe;
 import com.stripe.model.Charge;
 import com.stripe.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
 public class StripeClient {
+    private ObjectMapper objectMapper;
+    private Stripe stripe;
+    /*public StripeClient() {
+        objectMapper = new ObjectMapper();
+        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        Stripe.apiKey = "sk_test_51MpURUImJwa6U6kHEm7AejSf8aO1S1aDPdGEdlXF9YBDgfdhWMBjsWDt2IpzDeTw4LeBhFjkLmItSUNItUSkXdKj00vPQw6te9";
+    }*/
     IContractService iContractService;
     @Autowired
     StripeClient() {

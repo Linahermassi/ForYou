@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/payment")
-@CrossOrigin("*")
 public class PaymentRestController {
     private StripeClient stripeClient;
     @Autowired
