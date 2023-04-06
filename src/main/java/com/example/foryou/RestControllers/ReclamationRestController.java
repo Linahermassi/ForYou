@@ -141,6 +141,22 @@ public class ReclamationRestController {
             }
         }
     }
+    @PutMapping("/{reclamation_id}/status/en_cours")
+    public ResponseEntity<String> updateStatusToEnCours(@PathVariable("reclamation_id") int id) {
+        Reclamation reclamation = iReclamationService.selectById(id);
+        if (reclamation != null) {
+            Reclamation updatedReclamation = reclamation;
+            if (updatedReclamation.getStatus() == Status.EN_ATTENTE) {
+                updatedReclamation.setStatus(Status.EN_COURS);
+                iReclamationService.edit(updatedReclamation);
+                return new ResponseEntity<>("Reclamation status updated to EN_COURS", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Invalid status update", HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<>("Reclamation not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
     public static Etat getEmotionalState(String details) {
         // Define a dictionary of words and their corresponding sentiment scores
