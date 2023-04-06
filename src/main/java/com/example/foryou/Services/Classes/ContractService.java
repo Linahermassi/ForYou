@@ -1,12 +1,11 @@
 package com.example.foryou.Services.Classes;
+
 import com.example.foryou.DAO.Entities.*;
 import com.example.foryou.DAO.Repositories.ContractRepository;
 import com.example.foryou.DAO.Repositories.NotificationRepository;
 import com.example.foryou.DAO.Repositories.UserRepository;
 import com.example.foryou.Services.Interfaces.IContractService;
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import lombok.AllArgsConstructor;
@@ -15,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -31,10 +31,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Phrase;
 
 @Service
 @AllArgsConstructor

@@ -8,6 +8,9 @@ import com.example.foryou.DAO.Repositories.InscriptionEventRepository;
 import com.example.foryou.DAO.Repositories.UserRepository;
 import com.example.foryou.Services.Interfaces.IinscriptionEventService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,15 +65,12 @@ public class InscriptionEventService implements IinscriptionEventService {
         inscriptionEventRepository.deleteAll();
     }
     @Override
-    public InscriptionEvent assignParticipantandEventToInscription(int idEvent, int idParticipant, InscriptionEvent i) {
+    public InscriptionEvent assignParticipantandEventToInscription(int idEvent, InscriptionEvent i) {
+        String username = this.getCurrentUserName();
+        User user = this.getUser(username);
+        i.setParticipant(user);
         Event event= eventRepository.findById(idEvent).get();
-
-        User participant=userRepository.findById(idParticipant).get();
-
-
-
         i.setEvent(event);
-        i.setParticipant(participant);
 
         return inscriptionEventRepository.save(i);
     }
@@ -80,6 +80,24 @@ public class InscriptionEventService implements IinscriptionEventService {
         InscriptionEvent inscription= inscriptionEventRepository.findById(inscriptionid).get();
         inscription.setMark(mark);
         inscriptionEventRepository.save(inscription);
+    }
+
+    @Override
+    public String getCurrentUserName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        } else {
+            return principal.toString();
+        }
+    }
+    @Override
+    public User getUser(String username) {
+        return userRepository.findByUsername(username);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.foryou.Services.Interfaces;
 
 import com.example.foryou.DAO.Entities.Event;
+import com.example.foryou.DAO.Entities.User;
 
 import java.util.List;
 
@@ -22,4 +23,8 @@ public interface IeventService {
     void deleteAll(List<Event> list);
 
     void deleteAll();
+
+    String getCurrentUserName();
+
+    User getUser(String username);
 }

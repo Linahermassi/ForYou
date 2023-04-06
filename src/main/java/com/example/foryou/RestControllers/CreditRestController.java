@@ -22,9 +22,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/Credit")
-
-
-
 public class CreditRestController {
     private ICreditService iCreditService;
     private CreditService creditService;

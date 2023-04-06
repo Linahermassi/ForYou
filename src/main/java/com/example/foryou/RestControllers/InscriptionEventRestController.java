@@ -1,6 +1,7 @@
 package com.example.foryou.RestControllers;
 
 import com.example.foryou.DAO.Entities.InscriptionEvent;
+import com.example.foryou.DAO.Entities.User;
 import com.example.foryou.Services.Interfaces.IinscriptionEventService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.function.ServerResponse;
 
@@ -22,6 +26,7 @@ import java.util.List;
 @RequestMapping("/InscriptionEvent")
 public class InscriptionEventRestController {
     private IinscriptionEventService iinscriptionEventService;
+
 
     @GetMapping("/afficherInscriptionEventById/{Id}")
     public InscriptionEvent afficherCreditById(@PathVariable int Id) {
@@ -76,10 +81,10 @@ public class InscriptionEventRestController {
         return ResponseEntity.ok("Deleted successfully.");
     }
 
-    @PostMapping("/ajouterParticpantInscriptionEvent/{EventId}/{ParticipantId}")
-    public InscriptionEvent addInscriptionEvent(@PathVariable int EventId, @PathVariable int ParticipantId) {
+    @PostMapping("/ajouterParticpantInscriptionEvent/{EventId}")
+    public InscriptionEvent addInscriptionEvent(@PathVariable int EventId) {
         InscriptionEvent i = new InscriptionEvent();
-        return iinscriptionEventService.assignParticipantandEventToInscription(EventId, ParticipantId, i);
+        return iinscriptionEventService.assignParticipantandEventToInscription(EventId, i);
 
     }
 
@@ -149,6 +154,4 @@ public class InscriptionEventRestController {
     public void setfeedback(@PathVariable int inscriptionid, @PathVariable int mark) {
         iinscriptionEventService.assignMarkEvent(mark, inscriptionid);
     }
-
-
 }

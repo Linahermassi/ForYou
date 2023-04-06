@@ -50,7 +50,7 @@ public class UserRestController {
     }
 
     @DeleteMapping("/deleteUserById")
-    public ResponseEntity<String> deleteUserById(@RequestBody int id) {
+    public ResponseEntity<String> deleteUserById(@RequestBody Long id) {
         iuserService.deleteById(id);
         return ResponseEntity.ok("Deleted successfully !");
     }

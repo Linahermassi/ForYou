@@ -2,6 +2,7 @@ package com.example.foryou.Services.Interfaces;
 
 import com.example.foryou.DAO.Entities.Reclamation;
 import com.example.foryou.DAO.Entities.Status;
+import com.example.foryou.DAO.Entities.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,4 +28,8 @@ public interface IReclamationService {
     void deleteAll(List<Reclamation> list);
     void deleteAll();
     List<Reclamation> findByStatus(Status status);
+
+    String getCurrentUserName();
+
+    User getUser(String username);
 }

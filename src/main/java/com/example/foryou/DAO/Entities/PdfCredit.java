@@ -21,7 +21,7 @@ public class PdfCredit {
         document.open();
 
 
-        Image logo = Image.getInstance("G:/spring/ForYou/src/main/resources/logo.png"); // Replace with path to your logo image
+        Image logo = Image.getInstance("image/logo1.png"); // Replace with path to your logo image
         logo.scaleToFit(100, 60); // Resize image to fit within 100x100 pixels
         Chunk logoChunk = new Chunk(logo, 0, -20, false);
         Phrase logoPhrase = new Phrase(logoChunk);

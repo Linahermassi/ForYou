@@ -1,6 +1,7 @@
 package com.example.foryou.Services.Interfaces;
 
 import com.example.foryou.DAO.Entities.InscriptionEvent;
+import com.example.foryou.DAO.Entities.User;
 
 import java.util.List;
 
@@ -23,9 +24,11 @@ public interface IinscriptionEventService {
 
     void deleteAll();
 
-
-
-    InscriptionEvent assignParticipantandEventToInscription(int idEvent, int idParticipant, InscriptionEvent i);
+    InscriptionEvent assignParticipantandEventToInscription(int idEvent, InscriptionEvent i);
 
     void assignMarkEvent(int mark, int inscriptionid);
+
+    String getCurrentUserName();
+
+    User getUser(String username);
 }

@@ -116,7 +116,7 @@ public class ReclamationRestController {
     // @Scheduled(cron = "0 0 0 * * *") // tous les jours à minuit
 
     @GetMapping("/Mail")
-    @Scheduled(cron = "0 */2 * * * *") // tous les 2 minutes
+    //@Scheduled(cron = "0 */2 * * * *") // tous les 2 minutes
     public void sendReminderEmails() {
         List<Reclamation> reclamations = iReclamationService.findByStatus(Status.EN_ATTENTE); // récupérer les réclamations en attente
         LocalDate todayMinusThreeDays = LocalDate.now().minusDays(3);

@@ -14,7 +14,7 @@ public interface IuserService {
 
     User selectById(Long userId);
 
-    void deleteById(int roleId);
+    void deleteById(Long roleId);
 
     void delete(User u);
 

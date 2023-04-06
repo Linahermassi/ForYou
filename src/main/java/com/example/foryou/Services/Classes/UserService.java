@@ -43,7 +43,7 @@ public class UserService implements IuserService {
     }
 
     @Override
-    public void deleteById(int roleId) {
+    public void deleteById(Long roleId) {
         userRepository.deleteById(roleId);
     }
 

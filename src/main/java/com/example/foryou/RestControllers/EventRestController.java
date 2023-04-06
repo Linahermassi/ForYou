@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -36,17 +38,8 @@ public class EventRestController {
         return iEventService.selectAll();
     }
 
-    @PostMapping("/ajouterEvent")
-    public Event addEvent(@RequestBody Event Event) {
-        return iEventService.add(Event);
-
-    }
-
     @PostMapping("/ajouterEventavecuser")
-    public Event addEvent(@RequestBody Event Event, @RequestParam Long UserId) {
-        User organizer;
-        organizer = iuserService.selectById(UserId);
-        Event.setOrganizer(organizer);
+    public Event addEvent(@RequestBody Event Event) {
         return iEventService.add(Event);
 
     }
@@ -134,6 +127,15 @@ public class EventRestController {
                 System.out.println("No marks found for event " + i.getFirstName());
             }
         }
+    }
+    @GetMapping("/eventssortedbymarks")
+    public List<Event> getEventsSortedByMarks() {
+        List<Event> events = iEventService.selectAll(); // assume eventService is already defined
+
+        // Sort events by their marks
+        Collections.sort(events, Comparator.comparing(Event::getMark).reversed());
+
+        return events;
     }
 }
 
