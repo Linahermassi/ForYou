@@ -94,6 +94,22 @@ public class ReclamationRestController {
             return new ResponseEntity<>("Reclamation not found", HttpStatus.NOT_FOUND);
         }
     }
+    @PutMapping("/{reclamation_id}/status/en_cours")
+    public ResponseEntity<String> updateStatusToEnCours(@PathVariable("reclamation_id") int id) {
+        Reclamation reclamation = iReclamationService.selectById(id);
+        if (reclamation != null) {
+            Reclamation updatedReclamation = reclamation;
+            if (updatedReclamation.getStatus() == Status.EN_ATTENTE) {
+                updatedReclamation.setStatus(Status.EN_COURS);
+                iReclamationService.edit(updatedReclamation);
+                return new ResponseEntity<>("Reclamation status updated to EN_COURS", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Invalid status update", HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<>("Reclamation not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
     private void checkDescription(String details) {
         // Récupérer la liste des mots interdits dans la base de données

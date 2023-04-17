@@ -27,4 +27,6 @@ public interface IReclamationService {
     void deleteAll(List<Reclamation> list);
     void deleteAll();
     List<Reclamation> findByStatus(Status status);
+
+
 }

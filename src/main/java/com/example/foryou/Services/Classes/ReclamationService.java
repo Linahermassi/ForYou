@@ -1,12 +1,15 @@
 package com.example.foryou.Services.Classes;
 
 import com.example.foryou.DAO.Entities.Reclamation;
+import com.example.foryou.DAO.Entities.User;
 import com.example.foryou.DAO.Entities.Status;
-import com.example.foryou.RestControllers.ReclamationRestController;
 import com.example.foryou.Services.Interfaces.IReclamationService;
 import lombok.AllArgsConstructor;
+
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.stereotype.Service;
 import com.example.foryou.DAO.Repositories.ReclamationRepository;
+import com.example.foryou.DAO.Repositories.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,6 +21,7 @@ import static com.example.foryou.RestControllers.ReclamationRestController.getEm
 public class ReclamationService implements IReclamationService {
 
     private ReclamationRepository reclamationRepository;
+
 
     @Override
     public Reclamation add(Reclamation rec) {
@@ -70,5 +74,6 @@ public class ReclamationService implements IReclamationService {
     public List<Reclamation> findByStatus(Status status) {
         return reclamationRepository.findByStatus(status);
     }
+
 
 }
