@@ -27,6 +27,7 @@ public class User implements Serializable {
     private static final int EXPIRATION_TIME = 10;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+            // @column(length = 200) obligatoire si l'id est de type String et on supprime @GeneratedValue...
     Long userId;
 
     String username;

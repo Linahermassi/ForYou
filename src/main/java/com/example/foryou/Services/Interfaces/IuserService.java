@@ -16,6 +16,8 @@ public interface IuserService {
 
     void deleteById(Long roleId);
 
+    void deleteById(Long roleId);
+
     void delete(User u);
 
     List<User> addAll(List<User> list);

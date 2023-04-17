@@ -3,10 +3,8 @@ package com.example.foryou.Services.Classes;
 import com.example.foryou.DAO.Entities.User;
 import com.example.foryou.DAO.Repositories.UserRepository;
 import com.example.foryou.Services.Interfaces.IuserService;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.experimental.FieldDefaults;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,6 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserService implements IuserService {
     UserRepository userRepository;
 
