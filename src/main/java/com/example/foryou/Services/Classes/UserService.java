@@ -5,9 +5,10 @@ import com.example.foryou.DAO.Repositories.UserRepository;
 import com.example.foryou.Services.Interfaces.IuserService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 import java.util.HashMap;
 import java.util.List;
@@ -19,8 +20,14 @@ import java.util.Optional;
 public class UserService implements IuserService {
     UserRepository userRepository;
 
+
+    @Autowired
+    private PasswordEncoder bcryptEncoder;
+
     @Override
     public User add(User u) {
+        System.out.println(u.getPassword());
+        u.setPassword(bcryptEncoder.encode(u.getPassword()));
         return userRepository.save(u);
     }
 
@@ -40,8 +47,8 @@ public class UserService implements IuserService {
     }
 
     @Override
-    public void deleteById(Long roleId) {
-        userRepository.deleteById(roleId);
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
 
     @Override

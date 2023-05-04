@@ -6,11 +6,13 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import net.bytebuddy.utility.RandomString;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
@@ -35,14 +37,15 @@ public class ForgotPasswordController {
 //    }
 
     @PostMapping("/forgot_password/{email}")
-    public String processForgotPassword(HttpServletRequest request, Model model,@PathVariable String email) {
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public  void processForgotPassword(HttpServletRequest request, Model model, @PathVariable String email) {
         //String email = request.getParameter("email");
         String token = RandomString.make(30);
         System.out.printf(email);
         try {
-            System.out.println("test");
+            System.out.println(token);
             userService.updateResetPasswordToken(token, email);
-            String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
+            String resetPasswordLink = "http://localhost:4200/reset_password?token=" + token;
             System.out.println("sssss");
 
             sendEmail(email, resetPasswordLink);
@@ -53,8 +56,6 @@ public class ForgotPasswordController {
         } catch (UnsupportedEncodingException e) {
             model.addAttribute("error", "Error while sending email");
         }
-
-        return "forgot_password_form";
     }
 
 
@@ -100,23 +101,23 @@ public class ForgotPasswordController {
 //    }
 
     @PostMapping("/reset_password/{token}/{password}")
-    public String processResetPassword(HttpServletRequest request, Model model,@PathVariable String token,@PathVariable String password) {
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void processResetPassword(HttpServletRequest request, Model model,@PathVariable String token,@PathVariable String password) throws Exception {
 //        String token = request.getParameter("token");
 //        String password = request.getParameter("password");
 
         User user = userService.getByResetPasswordToken(token);
+        System.out.println("herre");
         System.out.println(user.getEmail());
         model.addAttribute("title", "Reset your password");
 
         if (user == null) {
             model.addAttribute("message", "Invalid Token");
-            return "message";
+            throw new Exception("invalid token");
         } else {
             userService.updatePassword(user, password);
 
             model.addAttribute("message", "You have successfully changed your password.");
         }
-
-        return "message";
     }
 }

@@ -31,7 +31,6 @@ public class User implements Serializable {
     Long userId;
 
     String username;
-    @JsonIgnore
     String password;
     String firstName;
     String lastName;

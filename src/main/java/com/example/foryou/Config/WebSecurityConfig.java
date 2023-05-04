@@ -26,13 +26,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 
-     UserDetailsService jwtUserDetailsService;
+    UserDetailsService jwtUserDetailsService;
 
 
-     JwtRequestFilter jwtRequestFilter;
+    JwtRequestFilter jwtRequestFilter;
 
 
     @Autowired
@@ -57,12 +57,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // We don't need CSRF for this example
-        httpSecurity.csrf().disable()
+        httpSecurity.cors().and().csrf().disable()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/authenticate","/register","/payment/charge").permitAll().
                 // all other requests need to be authenticated
 
-                        //accès à toutes les URLs
+                //accès à toutes les URLs
                         anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
