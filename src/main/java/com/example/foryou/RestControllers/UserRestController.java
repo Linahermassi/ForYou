@@ -5,6 +5,7 @@ import com.example.foryou.Services.Interfaces.IuserService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,15 +45,15 @@ public class UserRestController {
     }
 
     @PutMapping("/modifierUser")
-    public ResponseEntity<String> editUser(@RequestBody User user) {
+    public User editUser(@RequestBody User user) {
         iuserService.edit(user);
-        return ResponseEntity.ok("Edited successfully !");
+        return user;
     }
 
-    @DeleteMapping("/deleteUserById")
-    public ResponseEntity<String> deleteUserById(@RequestBody Long id) {
+    @DeleteMapping("/deleteUserById/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteUserById(@PathVariable Long id) {
         iuserService.deleteById(id);
-        return ResponseEntity.ok("Deleted successfully !");
     }
 
     @DeleteMapping("/deleteUser")

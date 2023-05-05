@@ -27,10 +27,10 @@ public class User implements Serializable {
     private static final int EXPIRATION_TIME = 10;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+            // @column(length = 200) obligatoire si l'id est de type String et on supprime @GeneratedValue...
     Long userId;
 
     String username;
-    @JsonIgnore
     String password;
     String firstName;
     String lastName;
@@ -43,6 +43,8 @@ public class User implements Serializable {
      String expertiseDomain;
      float salaire;
      String region;
+
+     float salary = 0;
 
     @Enumerated(EnumType.STRING)
     Gender gender;
