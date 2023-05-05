@@ -23,7 +23,6 @@ public class Notification implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int notifId;
-
     @Column(length = 1000)
     String NotifDescription;
     @Enumerated(EnumType.STRING)

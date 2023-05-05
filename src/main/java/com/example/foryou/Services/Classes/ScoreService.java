@@ -69,4 +69,14 @@ public class ScoreService implements IScoreServie {
         return contrat.getCeilingAmount();
     }
 
+    @Override
+    public double[] Score1(Long clientId, int contratId) {
+        double[] list = new double[3];
+        list[0]=120;
+        list[1]=this.calculerScore(clientId);
+        list[2]=this.modifierMontantContrat(contratId);
+        return list;
     }
+
+
+}

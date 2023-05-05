@@ -18,7 +18,7 @@ public interface ContractRepository extends JpaRepository<Contracts,Integer> {
     @Query(value = "select c from Contracts c , Sinister s where s.contract.contract_id = c.contract_id and s.typeSinister=?1")
     List<Contracts> selectContractByType(Type type);
     // ********** Affichage des contracts renouvelable dont la date d'expiration et la date d'aujourdhui
-    @Query(value = "select c from Contracts c where c.exprirationDate=current_date and c.renewable=True")
+    @Query(value = "select c from Contracts c where c.renewable=True")
     List<Contracts> selectRenewableContract();
     // ********** Supprimer les contracts non renouvlable dont la date d'expiration et la date d'aujourdhui
     @Transactional
