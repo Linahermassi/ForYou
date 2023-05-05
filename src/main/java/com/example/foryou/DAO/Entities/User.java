@@ -44,6 +44,8 @@ public class User implements Serializable {
      float salaire;
      String region;
 
+     float salary = 0;
+
     @Enumerated(EnumType.STRING)
     Gender gender;
 

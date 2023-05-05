@@ -45,9 +45,9 @@ public class UserRestController {
     }
 
     @PutMapping("/modifierUser")
-    public ResponseEntity<String> editUser(@RequestBody User user) {
+    public User editUser(@RequestBody User user) {
         iuserService.edit(user);
-        return ResponseEntity.ok("Edited successfully !");
+        return user;
     }
 
     @DeleteMapping("/deleteUserById/{id}")
