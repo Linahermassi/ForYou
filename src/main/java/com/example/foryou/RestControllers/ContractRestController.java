@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.PathParam;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/Contract")
+@CrossOrigin("*")
 public class ContractRestController {
     private IContractService iContractService;
     @PostMapping("/ajouterContract")
@@ -36,7 +38,7 @@ public class ContractRestController {
         return ResponseEntity.ok("Added successfully.");
     }
     @PutMapping("/ModifierContract")
-    public ResponseEntity<String> editContract(@RequestBody Contracts contract){
+        public ResponseEntity<String> editContract(@RequestBody Contracts contract){
         iContractService.editContract(contract);
         return ResponseEntity.ok("Edited successfully.");
     }
@@ -45,8 +47,8 @@ public class ContractRestController {
         iContractService.deleteContract(contract);
         return ResponseEntity.ok("Deleted successfully.");
     }
-    @DeleteMapping("/SupprimerContractById")
-    public ResponseEntity<String> supprimerContractById(@RequestParam int contractId){
+    @DeleteMapping("/SupprimerContractById/{contractId}")
+    public ResponseEntity<String> supprimerContractById(@PathVariable int contractId){
         iContractService.deleteContractById(contractId);
         return ResponseEntity.ok("Deleted successfully.");
     }
@@ -61,7 +63,7 @@ public class ContractRestController {
         return ResponseEntity.ok("Deleted successfully.");
     }
     //////
-    @GetMapping("/afficherContractById")
+    @GetMapping("/afficherContractById/{contractId}")
     public Contracts afficherContractById(@PathVariable int contractId ) {
 
         return iContractService.SelectContractById(contractId);

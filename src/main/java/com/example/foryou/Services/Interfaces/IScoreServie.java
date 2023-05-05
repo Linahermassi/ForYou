@@ -5,4 +5,6 @@ import com.example.foryou.DAO.Entities.User;
 public interface IScoreServie {
      double calculerScore(Long clientId);
     double modifierMontantContrat(int contratId);
+    double[] Score1 (Long clientId,int contratId);
+
 }
