@@ -24,6 +24,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/InscriptionEvent")
+@CrossOrigin("*")
 public class InscriptionEventRestController {
     private IinscriptionEventService iinscriptionEventService;
 

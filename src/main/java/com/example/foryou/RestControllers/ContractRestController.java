@@ -2,6 +2,7 @@ package com.example.foryou.RestControllers;
 import com.example.foryou.DAO.Entities.Contracts;
 import com.example.foryou.DAO.Entities.Type;
 import com.example.foryou.DAO.Entities.User;
+import com.example.foryou.Services.Classes.ContractService;
 import com.example.foryou.Services.Interfaces.IContractService;
 import com.itextpdf.text.DocumentException;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
@@ -91,8 +92,10 @@ public class ContractRestController {
         public ResponseEntity<String> verifierContrats() throws MessagingException, javax.mail.MessagingException {
             iContractService.verifierContrats();
             return ResponseEntity.ok("L'envoi du mail été effectué avec succès.");
+        }@GetMapping("/CurrentUser")
+        public String getCurrentUsername() {
+        return iContractService.getCurrentUserName();
         }
-
     }
 
 

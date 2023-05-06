@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -19,27 +18,31 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/Credit")
+
+
+
 public class CreditRestController {
     private ICreditService iCreditService;
     private CreditService creditService;
     public boolean hasEightDigits(String type) {
-        return (type.length() >= 3 );}
+        return (type.length() >= 5 );}
     //@EventListener(ApplicationReadyEvent.class)
     @PostMapping("/ajouterCredit")
-    public ResponseEntity<?> add(@RequestBody Credit credit) throws MessagingException{
-        boolean testType = hasEightDigits(credit.getType());
+    public Credit add(@RequestBody Credit credit){
+      /*  boolean testType = hasEightDigits(credit.getType());
         boolean testDate = credit.getStartDate().before(credit.getEndtDate());
         boolean testAmount = credit.getAmount()>0.0;
         boolean testNbrA = credit.getNb_years()>0;
 
         if(!testType)
         {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("the credit type must contain at least 3 characters");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("the credit type must contain at least 5 characters");
         }
-         if (!testDate) {
+        else if (!testDate) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The start date must be before the end date");
         }
         else if (!testAmount) {
@@ -49,9 +52,10 @@ public class CreditRestController {
         else if (!testNbrA) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le nombre d'années doit etre superieur à 0 ");
 
-        }
-        else iCreditService.add(credit);
-        return ResponseEntity.ok("Added successfully.");
+        }*/
+
+        return iCreditService.add(credit);
+
     }
 
 
@@ -61,9 +65,9 @@ public class CreditRestController {
         return ResponseEntity.ok("Added successfully.");
     }
     @PutMapping("/ModifierCredit")
-    public ResponseEntity<String> edit(@RequestBody Credit credit){
-        iCreditService.edit(credit);
-        return ResponseEntity.ok("Edited successfully.");
+    public Credit edit(@RequestBody Credit credit){
+        return iCreditService.edit(credit);
+        //return ResponseEntity.ok("Edited successfully.");
     }
     @DeleteMapping("/SupprimerCredit")
     public ResponseEntity<String> delete(@RequestBody Credit credit){
@@ -85,7 +89,7 @@ public class CreditRestController {
         iCreditService.deleteAll();
         return ResponseEntity.ok("Deleted successfully.");
     }
-    @GetMapping("/afficherCreditById")
+    @GetMapping("/afficherCreditById/{creditId}")
     public Credit afficherCreditById(@PathVariable int creditId ) {
 
         return iCreditService.selectById(creditId);
@@ -95,23 +99,23 @@ public class CreditRestController {
         return iCreditService.selectAll();
     }
     @GetMapping("/Calcul1Credit/{id}")
-    public void calcul1(@PathVariable int id){
+    public float[][] calcul1(@PathVariable int id){
 
-        iCreditService.Calcul1(iCreditService.selectById(id));
+        return iCreditService.Calcul1(iCreditService.selectById(id));
     }
     @GetMapping("/Calcul2Credit/{id}")
-    public void calcul2(@PathVariable int id){
+    public float[][] calcul2(@PathVariable int id){
 
-        iCreditService.Calcul2(iCreditService.selectById(id));
+        return iCreditService.Calcul2(iCreditService.selectById(id));
     }
     @GetMapping("/Rentability")
-    public void rentabilite(){
-        iCreditService.Rentabilité();
+    public float rentabilite(){
+        return iCreditService.Rentabilité();
     }
-    @GetMapping("/Scoring")
+    /*@GetMapping("/Scoring")
     public List<Credit> scoring(){
         return iCreditService.Scoring();
-    }
+*/
     @GetMapping("/Pdf/{id}")
     public void generatePdfFile(HttpServletResponse response,@PathVariable int id) throws DocumentException, IOException{
         response.setContentType("application/pdf");
@@ -124,17 +128,16 @@ public class CreditRestController {
         PdfCredit generator = new PdfCredit();
         generator.generate(credit, response);
     }
-    @GetMapping("/Status")
-    public void Status(){
-        iCreditService.StatusCredit();
+
+    @GetMapping("/Status/{id}")
+    public void Status(@PathVariable int id){
+        iCreditService.StatusCredit(id);
     }
     @GetMapping("/Profit/{type}/{region}")
     public float Profit(@PathVariable String type,@PathVariable String region){
-       return iCreditService.Profit(type,region);
+        return iCreditService.Profit(type,region);
     }
 
 
 
-    }
-
-
+}

@@ -1,9 +1,9 @@
 package com.example.foryou.DAO.Entities;
 
 public enum Etat {
-    VERY_ANGRY,
-    ANGRY,
-    NEUTRAL,
-    HAPPY,
-    VERY_HAPPY
+    sentiment_very_dissatisfied,
+    sentiment_dissatisfied,
+    sentiment_neutral,
+    sentiment_satisfied,
+    sentiment_very_satisfied
 }

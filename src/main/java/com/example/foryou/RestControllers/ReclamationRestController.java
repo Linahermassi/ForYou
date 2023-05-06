@@ -1,23 +1,13 @@
 package com.example.foryou.RestControllers;
-
-//import com.example.foryou.DAO.Entities.Etat;
 import com.example.foryou.DAO.Entities.*;
 import com.example.foryou.DAO.Repositories.ForBiddenWordRepository;
-//import com.example.foryou.DAO.Repositories.ReclamationRepository;
 import com.example.foryou.Services.Interfaces.IReclamationService;
-/*import edu.stanford.nlp.ling.CoreAnnotations;
-import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
-import edu.stanford.nlp.util.CoreMap;*/
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
-
 import javax.ws.rs.BadRequestException;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +18,7 @@ import java.time.LocalDate;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/Reclamation")
+@CrossOrigin("*")
 public class ReclamationRestController {
     private IReclamationService iReclamationService;
     private ForBiddenWordRepository forBiddenWordRepository;
@@ -141,7 +132,7 @@ public class ReclamationRestController {
             }
         }
     }
-    @PutMapping("/{reclamation_id}/status/en_cours")
+    @PutMapping("/status/en_cours/{reclamation_id}")
     public ResponseEntity<String> updateStatusToEnCours(@PathVariable("reclamation_id") int id) {
         Reclamation reclamation = iReclamationService.selectById(id);
         if (reclamation != null) {
@@ -182,16 +173,17 @@ public class ReclamationRestController {
 
         // Map the overall sentiment score to an Etat enum value
         if (sentimentScore > 2) {
-            return Etat.VERY_HAPPY;
+            return Etat.sentiment_very_satisfied;
         } else if (sentimentScore > 0) {
-            return Etat.HAPPY;
+            return Etat.sentiment_satisfied;
         } else if (sentimentScore < -2) {
-            return Etat.VERY_ANGRY;
+            return Etat.sentiment_very_dissatisfied;
         } else if (sentimentScore < 0) {
-            return Etat.ANGRY;
+            return Etat.sentiment_dissatisfied;
         } else {
-            return Etat.NEUTRAL;
+            return Etat.sentiment_neutral;
         }
+
     }
 
     @PutMapping("/{reclamation_id}/etat")
@@ -215,4 +207,15 @@ public class ReclamationRestController {
         System.out.println("777777");
         return ResponseEntity.ok(reclamation);
     }
+    @GetMapping("/afficherReclamationById/{reclamation_id}")
+    public Reclamation afficherReclamationById(@PathVariable("reclamation_id") int ReclamationId) {
+
+        return iReclamationService.selectById(ReclamationId);
+    }
+
+    @GetMapping("/afficherAllReclamations")
+    public List<Reclamation> afficherAll() {
+        System.out.println("rappel envoyé");return iReclamationService.selectAll();
+    }
+
 }

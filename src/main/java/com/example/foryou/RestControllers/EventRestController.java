@@ -21,6 +21,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/Event")
+@CrossOrigin("*")
 public class EventRestController {
     private IeventService iEventService;
     IuserService iuserService;

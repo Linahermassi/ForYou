@@ -1,7 +1,5 @@
 package com.example.foryou.Services.Interfaces;
 import com.example.foryou.DAO.Entities.Credit;
-import com.example.foryou.DAO.Entities.User;
-
 import java.util.List;
 
 
@@ -28,19 +26,17 @@ public interface ICreditService {
       }*/
 
 
-    void Calcul1(Credit c);
+    float[][] Calcul1(Credit c);
 
-    void Calcul2(Credit c);
+    float[][] Calcul2(Credit c);
 
-    void Rentabilité();
+    float Rentabilité();
 
-    List<Credit> Scoring();
+    //List<Credit> Scoring();
 
-    void StatusCredit();
+
+
+    void StatusCredit(int id);
 
     float Profit(String type, String region);
-
-    String getCurrentUserName();
-
-    User getUser(String username);
 }

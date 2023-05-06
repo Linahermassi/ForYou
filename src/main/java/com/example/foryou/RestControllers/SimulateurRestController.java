@@ -1,13 +1,11 @@
 package com.example.foryou.RestControllers;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Simulator")
+@CrossOrigin("*")
 public class SimulateurRestController {
 
     // Estimated lifespan and estimated lifetime KM for each car type
@@ -17,12 +15,6 @@ public class SimulateurRestController {
     private static final int MIDRANGE_LIFETIME_KM = 300_000;
     private static final int LUXURY_LIFESPAN = 20;
     private static final int LUXURY_LIFETIME_KM = 400_000;
-
-    // New car value for each car type
-  /*  private static final double ECONOMY_NEW_CAR_VALUE = 20_000;
-    private static final double MIDRANGE_NEW_CAR_VALUE = 30_000;
-    private static final double LUXURY_NEW_CAR_VALUE = 50_000;*/
-
     @GetMapping("/value")
     public Double getCarValue(
             @RequestParam int age,

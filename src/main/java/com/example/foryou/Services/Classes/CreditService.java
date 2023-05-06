@@ -2,16 +2,12 @@ package com.example.foryou.Services.Classes;
 
 import com.example.foryou.DAO.Entities.Credit;
 import com.example.foryou.DAO.Entities.StateCredit;
-import com.example.foryou.DAO.Entities.User;
 import com.example.foryou.DAO.Repositories.CreditRepository;
-import com.example.foryou.DAO.Repositories.UserRepository;
 import com.example.foryou.Services.Interfaces.ICreditService;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -21,15 +17,12 @@ import java.util.List;
 public class CreditService implements ICreditService {
 
     private CreditRepository creditRepository;
-    private UserRepository userRepository;
 
 
 
     @Override
     public Credit add(Credit c) {
-        String username=this.getCurrentUserName();
-        User user =this.getUser(username);
-        c.setClient(user);
+        c.setInterestRate(0.115F);
         return creditRepository.save(c);
     }
 
@@ -85,8 +78,8 @@ public class CreditService implements ICreditService {
 
 
 
-@Override
-    public void Calcul1(Credit c) {
+    @Override
+    public float[][]  Calcul1(Credit c) {
         float amt = 0;
         double x=0;
 
@@ -120,38 +113,18 @@ public class CreditService implements ICreditService {
             //rentabilité
             m=m+matrice[j][3];
         }
-    c.setRefundAmount(m);
-    c.setRentability((c.getRefundAmount()-c.getAmount())/c.getAmount());
-    System.out.println("la rentabilité par crédit est "+c.getRentability());
-    creditRepository.save(c);
-
-    /*LocalDate localDate1 = c.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    LocalDate localDate2 = c.getEndtDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-    // Calculez la différence entre les deux objets java.time.LocalDate en années
-    long differenceInYears = ChronoUnit.YEARS.between(localDate2, localDate1);
-
-    // Affichez le résultat
-    System.out.println("La différence entre les deux dates en années est : " + differenceInYears + " ans.");
-
-    String d = String.valueOf(c.getStartDate());
-    String d1 = String.valueOf(c.getEndtDate());
-    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-
-
-    try {
-        Date date = sdf.parse(d);
-        Date date1 = sdf.parse(d1);
-        Duration duration = Duration.between(date.toInstant(), date1.toInstant());
-        System.out.println(duration);
-    }
-    catch (ParseException e) {
-        e.printStackTrace();
-    }*/
+        c.setRefundAmount(m);
+        c.setRentability((c.getRefundAmount()-c.getAmount())/c.getAmount());
+        System.out.println("la rentabilité par crédit est "+c.getRentability());
+        creditRepository.save(c);
+        return matrice;
 
     }
+
+
+
     @Override
-    public void Calcul2(Credit c){
+    public float[][] Calcul2(Credit c){
         float  ms=0;
         float resultat=0;
         float rentabilité=0;
@@ -194,63 +167,62 @@ public class CreditService implements ICreditService {
             System.out.println();
 
         }
-       //rentabilité
-       c.setRefundAmount(matrice[0][3]*12*nb);
-       c.setRentability((c.getRefundAmount()-c.getAmount())/c.getAmount());
+        //rentabilité
+        c.setRefundAmount(matrice[0][3]*12*nb);
+        c.setRentability((c.getRefundAmount()-c.getAmount())/c.getAmount());
         System.out.println("la rentabilité par crédit"+c.getRentability());
         creditRepository.save(c);
+        return matrice;
 
     }
 
 
     @Override
     @Scheduled(cron ="0 0 9 31 12 *" ) //le 31/12 de n'importe quelle année à 9:00:00
-    public void Rentabilité()
+    public float Rentabilité()
     {  int nb_credits=0;
         float rentabilite=0;
         nb_credits=(int)creditRepository.count();
         System.out.println(nb_credits);
         rentabilite=(float)creditRepository.SommeRentabilite()/nb_credits;
-        System.out.print("la rentabilite globale est: "+rentabilite);
+        return rentabilite;
 
     }
 
-    @Override
+   /* @Override
     public List<Credit> Scoring() {
 
         return creditRepository.selectBySalary();
-    }
+    }*/
 
     @Override
-    public void StatusCredit(){
-    List<Credit> creditList=creditRepository.selectBySalary();
-     for (Credit credit: creditList){
-        credit.setStatus(StateCredit.ACCEPTED);
-        creditRepository.save(credit);
-     }
+    public void StatusCredit(int id){
+        String msg="";
+        List<Credit> creditList=creditRepository.selectBySalary(id);
+        List<Credit> credits=creditRepository.findAll();
+
+        for (Credit c: credits){
+            if (c.getCreditId()==id) {
+                c.setStatus(StateCredit.REFUSED);
+                creditRepository.save(c);
+                for (Credit credit : creditList) {
+                    if (credit.getCreditId() == id) {
+                        credit.setStatus(StateCredit.ACCEPTED);
+                        creditRepository.save(credit);
+                        //return msg = "votre credit est accepté";
+                    }
+                }
+            }
+        }
+        //return msg="votre credit est refusé";
     }
+
+
     @Override
     public float Profit(String type, String region)
     {
         return creditRepository.selectByTypeAndRegion(type,region);
 
-    }
-    @Override
-    public String getCurrentUserName() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return null;
-        }
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof UserDetails) {
-            return ((UserDetails) principal).getUsername();
-        } else {
-            return principal.toString();
-        }
-    }
-    @Override
-    public User getUser(String username) {
-        return userRepository.findByUsername(username);
     }
 
 
